@@ -54,8 +54,12 @@ export function useApp() {
       wakeRef.current = lock;
     }).catch(() => {});
     return () => {
-      stopCamera();
-      wakeRef.current?.release();
+      convoRef.current = false;
+      recRef.current?.stop?.();
+      streamRef.current?.getTracks?.().forEach((t) => t.stop());
+      streamRef.current = null;
+      window.speechSynthesis?.cancel();
+      wakeRef.current?.release?.();
     };
   }, []);
 
@@ -96,8 +100,9 @@ export function useApp() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ text, target: targetLang }),
     });
-    const data = await res.json();
+    const data = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data.error || "No se pudo traducir");
+    if (!data.translation) throw new Error("La traducción llegó vacía. Intenta otra vez.");
     try { sessionStorage.setItem(ck, data.translation); } catch {}
     return data.translation;
   }
@@ -137,6 +142,7 @@ export function useApp() {
     }
     recRef.current?.stop();
     setError("");
+    setHeard("");
     setStatus("Escuchando… acerca el celular");
     const from = listenRef.current;
     const to = targetRef.current;
@@ -196,6 +202,10 @@ export function useApp() {
 
   async function startCamera() {
     setError("");
+    if (!navigator.mediaDevices?.getUserMedia) {
+      setError("Abre la app en HTTPS (o usa Galería) para usar la cámara.");
+      return;
+    }
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: { ideal: "environment" } },
@@ -257,11 +267,12 @@ export function useApp() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image, target: targetLang }),
       });
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || "No se leyó la foto");
-      setTranslation(data.translation);
+      const translated = data.translation || "";
+      setTranslation(translated);
       setStatus("");
-      talk(spokenPart(data.translation), targetLang);
+      talk(spokenPart(translated), targetLang);
       buzz();
     } catch (e) {
       setError(e.message);
@@ -274,7 +285,13 @@ export function useApp() {
     if (!file) return;
     const blobUrl = URL.createObjectURL(file);
     const img = new Image();
+    img.onerror = () => {
+      URL.revokeObjectURL(blobUrl);
+      setError("No se pudo abrir esa imagen. Prueba con otra foto.");
+      setStatus("");
+    };
     img.onload = async () => {
+      URL.revokeObjectURL(blobUrl);
       const c = document.createElement("canvas");
       c.width = img.width;
       c.height = img.height;

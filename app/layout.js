@@ -4,6 +4,7 @@ import Install from "./install";
 export const metadata = {
   title: "TraduceYa",
   description: "Traduce voz y fotos. Incluye japonés.",
+  applicationName: "TraduceYa",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
@@ -11,9 +12,14 @@ export const metadata = {
     statusBarStyle: "black-translucent",
   },
   icons: {
-    apple: "/icon.svg",
-    icon: "/icon.svg",
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
   },
+  formatDetection: { telephone: false },
 };
 
 export const viewport = {

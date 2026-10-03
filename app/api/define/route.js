@@ -1,6 +1,10 @@
 import { cacheGet, cacheSet, cacheKey } from "../../../lib/cache";
 import { tooMany, clientIp } from "../../../lib/limit";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+export const maxDuration = 30;
+
 export async function GET(request) {
   try {
     if (tooMany(clientIp(request), 60)) {
@@ -14,10 +18,11 @@ export async function GET(request) {
     if (cached) return Response.json(cached);
 
     const res = await fetch(
-      `https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(q)}`
+      `https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(q)}`,
+      { signal: AbortSignal.timeout(7000), headers: { Accept: "application/json" } }
     );
     if (!res.ok) return Response.json({ word: q, meanings: [] });
-    const data = await res.json();
+    const data = await res.json().catch(() => null);
     const first = Array.isArray(data) ? data[0] : null;
     const out = {
       word: first?.word || q,
@@ -32,6 +37,6 @@ export async function GET(request) {
       headers: { "Cache-Control": "public, max-age=86400" },
     });
   } catch (e) {
-    return Response.json({ error: e.message || "Sin definición." }, { status: 500 });
+    return Response.json({ error: e?.message || "Sin definición." }, { status: 500 });
   }
 }

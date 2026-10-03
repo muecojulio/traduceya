@@ -31,9 +31,11 @@ Orden de traducción (las keys no se quitan):
 3. Cloudflare Workers AI (opcional, con key)
 4. Google gtx (pública, sin registro)
 5. Lingva (pública; proyecto [thedaviddelta/lingva-translate](https://github.com/thedaviddelta/lingva-translate))
-6. Mozhi / espejos (pública)
-7. MyMemory (pública)
+6. MyMemory (pública)
+7. Mozhi / espejos (pública)
 8. LibreTranslate (pública; [LibreTranslate/LibreTranslate](https://github.com/LibreTranslate/LibreTranslate))
+
+Si un motor devuelve error, HTML o vacío, se ignora y sigue el siguiente de la lista.
 
 Fotos: Groq visión o OCR.space.
 Definiciones cortas en inglés: [dictionaryapi.dev](https://dictionaryapi.dev) vía `/api/define?q=`.
@@ -48,17 +50,40 @@ Nunca subas esas keys a GitHub.
 
 ## Runtime
 
-Node.js `24.x` (`engines` en package.json y `.nvmrc`).
+Node.js `24.x` (`engines` en package.json y `.nvmrc`). Es la versión compatible con
+Vercel (el plan Hobby ya no acepta Node 20 desde octubre de 2026).
+
+## Publicar en Vercel
+
+1. Sube el repo a GitHub (rama `main`).
+2. En https://vercel.com/new importa el repo. Vercel detecta Next.js solo
+   (`vercel.json` también lo declara).
+3. No hace falta configurar Build Command ni Output Directory: usa `npm install`
+   y `npm run build`.
+4. Variables (opcionales, se pueden dejar vacías):
+   `GROQ_API_KEY`, `OCR_SPACE_API_KEY`, `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN`.
+   Sin keys la app usa los motores públicos de respaldo.
+5. Deploy. El build no necesita ninguna variable: no hay pasos que fallen si faltan.
+
+Notas de despliegue:
+
+- `package-lock.json` está versionado para que Vercel instale exactamente lo mismo que en local.
+- Las rutas de API declaran `runtime = "nodejs"` y `maxDuration` (hasta 60 s) para que
+  las llamadas a los motores no mueran con timeout en el plan Hobby.
+- Cada motor externo tiene un límite de tiempo propio (7 s texto, 45 s foto): si un
+  espejo público se cuelga, se pasa al siguiente en vez de tumbar la función.
+- Los iconos PWA se sirven como PNG (`/icon-192.png`, `/icon-512.png`,
+  `/icon-maskable-512.png`, `/apple-icon.png`) además del SVG.
 
 ## Privacidad
 
 Ruta `/privacidad`.
 
-## Publicar
+## Publicar (resumen)
 
-1. Repo privado `traduceya`.
+1. Repo `traduceya` en GitHub.
 2. En https://vercel.com/new importa el repo.
-3. Pega las variables y Deploy.
+3. Pega las variables (si las tienes) y Deploy.
 4. Abre la URL en el celular e instálala.
 
 ## Límites
