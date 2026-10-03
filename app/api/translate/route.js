@@ -1,14 +1,18 @@
 import { translateText } from "../../../lib/translate";
 import { tooMany, clientIp } from "../../../lib/limit";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+export const maxDuration = 60;
+
 export async function POST(request) {
   try {
     if (tooMany(clientIp(request))) {
       return Response.json({ error: "Demasiadas peticiones. Espera un minuto." }, { status: 429 });
     }
-    const body = await request.json();
-    const text = String(body.text || "").trim().slice(0, 4000);
-    const target = body.target || "es-MX";
+    const body = await request.json().catch(() => ({}));
+    const text = String(body?.text || "").trim().slice(0, 4000);
+    const target = typeof body?.target === "string" && body.target ? body.target : "es-MX";
     if (!text) {
       return Response.json({ error: "No hay texto para traducir." }, { status: 400 });
     }
@@ -18,8 +22,8 @@ export async function POST(request) {
     });
   } catch (e) {
     return Response.json(
-      { error: e.message || "Error de red al traducir." },
-      { status: 500 }
+      { error: e?.message || "Error de red al traducir." },
+      { status: 502 }
     );
   }
 }
