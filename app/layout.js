@@ -25,8 +25,7 @@ export const metadata = {
 export const viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
+  // Zoom nunca se bloquea: sin maximumScale ni user-scalable=no (accesibilidad).
   viewportFit: "cover",
   themeColor: "#071412",
 };
