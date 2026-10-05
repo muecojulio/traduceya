@@ -221,6 +221,7 @@ export function useApp() {
       });
     } catch {
       setError("No se abrió la cámara. Usa Galería o permite el permiso.");
+      throw new Error("cam");
     }
   }
 
@@ -277,6 +278,7 @@ export function useApp() {
     } catch (e) {
       setError(e.message);
       setStatus("");
+      throw e; // let the button show its error state
     }
   }
 
@@ -318,7 +320,7 @@ export function useApp() {
 
   return {
     tab, listenLang, setListenLang, targetLang, setTargetLang,
-    listening, heard, translation, setTranslation, photo, status, error,
+    listening, heard, translation, setTranslation, photo, status, error, setError,
     url, autoTalk, setAutoTalk, convo, camOn, torchOn, waiter, setWaiter,
     voiceKind, setVoiceKind, tone, setTone, voiceURI, setVoiceURI,
     esVoices, canInstall, videoRef, galRef,
