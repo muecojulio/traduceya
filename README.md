@@ -42,8 +42,7 @@ Dos ajustes, conmutables en **Ajustes** (pestaña `instalar`):
   con contraste AA y los orbes del fondo en `multiply`).
 - **Color de acento**: `Por pestaña` (turquesa, ámbar, menta, celeste) o `Por idioma`,
   y entonces el acento sale del idioma que lees. En `localStorage` como `ty-tint`,
-  aplicado con `.shell[data-tint="idioma"][data-dest="ja-JP"]` (en oklch: el tono sale
-  del idioma, la luminosidad del tema).
+  aplicado con `.shell[data-tint="idioma"][data-dest="ja-JP"]`.
 
 El tema y el tinte se fijan **antes del primer pintado** con un script en línea
 (`lib/appearance.js`) que lee `localStorage` y los parámetros del enlace: al abrir la app
@@ -51,6 +50,36 @@ no hay destello de claro sobre oscuro. React los mantiene al día después.
 
 El modo mesero (la pantalla enorme para enseñar al mesero) se queda oscuro a propósito:
 es una pantalla que se enseña de lejos.
+
+## Parámetros de URL
+
+Enlaces directos a un estado concreto. Son de un solo uso: **no se guardan** en
+`localStorage` y la app no los reescribe en la barra de direcciones, así que compartir
+un enlace no cambia los ajustes de quien lo abre.
+
+| Parámetro | Valores | Qué hace |
+| --- | --- | --- |
+| `tab` | `voz`, `foto`, `frases`, `instalar` | Abre esa pestaña |
+| `idioma` | `ja`, `ja-JP`, `en-US`… | Idioma que se lee (destino) |
+| `oye` | `es`, `es-MX`, `ja`… | Idioma que se escucha (origen) |
+| `tema` | `dia`, `noche` | Modo claro u oscuro |
+| `tinte` | `pestana`, `idioma` | De dónde sale el color de acento |
+
+Ejemplos:
+
+- `/?tab=instalar&tema=dia` — Ajustes en modo claro.
+- `/?tab=instalar&tema=dia&tinte=idioma&idioma=ja` — Ajustes claro con acento japonés.
+- `/?tab=foto&oye=es-MX&idioma=ja-JP` — Cámara, de español a japonés.
+- `/?tab=frases&idioma=en-US&tinte=idioma` — Frases con acento del inglés.
+
+El código corto (`ja`) se resuelve al idioma completo (`ja-JP`); lo que no se reconoce se
+ignora en silencio para no romper el arranque.
+
+## Herramientas
+
+`node tools/vista-previa/build.mjs` escribe `tools/vista-previa/vista-previa.svg`: una
+maqueta de las cuatro apariencias (noche/día × por pestaña/por idioma). Sin dependencias:
+solo Node, para poder mirarla o rasterizarla con lo que tengas a mano.
 
 ## Base de datos e índices
 
