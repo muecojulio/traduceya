@@ -15,6 +15,8 @@ en `app/globals.css` (sección "UI kit").
 | `Switch` | Checkbox expuesto como `role=switch` + `aria-checked`, thumb que se estira al presionar. |
 | `Collapse` | Panel plegable animado (`grid-template-rows`), `aria-expanded` + `inert` cuando está cerrado. |
 | `SwipeActions` | Deslizar tarjeta para revelar acciones (solo puntero táctil, eje bloqueado, clic tras arrastre anulado, umbral 45 % o flick rápido). Botón ⋯ siempre visible como alternativa, panel `inert`+`aria-hidden` al estar oculto y acciones inline en escritorio. |
+| `Icon` (`Icons.js`) | Íconos SVG en línea (trazo, 24×24, `currentColor`) en lugar de emojis: heredan el acento del CSS, no cuestan red y se pueden animar. Usados en el dock, botones y tarjetas. |
+| `Viva.js` | Piezas “vivas” y decorativas (`aria-hidden`): `Ambient` (orbes + grano + viga de luz), `Eq` (barras de ecualizador), `MicRings` (anillos al escuchar), `Ticker` (saludo rotativo del idioma destino), `Progress` (barra indeterminada), `Skeleton` (filas de carga), `ViewfinderHud` (marco + línea de escaneo + piloto), `WordReveal` (entrada palabra por palabra) y `useFlash` (destello breve al cambiar un valor). |
 | `utils.js` | `usePrefersReducedMotion`, `useFinePointer`, normalizador de búsqueda, `scrollChildIntoViewH`, `copyText` con fallback. |
 
 Reglas transversales (en `globals.css`): `prefers-reduced-motion` corta animaciones y
