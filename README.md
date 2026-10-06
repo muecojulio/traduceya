@@ -33,6 +33,25 @@ Todo el estilo vive en `app/globals.css`, organizado por secciones y con tokens 
 - **Accesibilidad.** `prefers-reduced-motion` congela orbes, ecualizadores, escaneo y grano;
   los estados nunca dependen solo del color; objetivos táctiles ≥ 44 px; zoom del navegador libre.
 
+## Apariencia: noche/día y acento por idioma
+
+Dos ajustes, conmutables en **Ajustes** (pestaña `instalar`):
+
+- **Apariencia**: `Noche` (por defecto) o `Día`, en `localStorage` como `ty-theme`.
+  Se aplica con `html[data-theme="dia"]` (tokens claros en `app/globals.css`, sección 13,
+  con contraste AA y los orbes del fondo en `multiply`).
+- **Color de acento**: `Por pestaña` (turquesa, ámbar, menta, celeste) o `Por idioma`,
+  y entonces el acento sale del idioma que lees. En `localStorage` como `ty-tint`,
+  aplicado con `.shell[data-tint="idioma"][data-dest="ja-JP"]` (en oklch: el tono sale
+  del idioma, la luminosidad del tema).
+
+El tema y el tinte se fijan **antes del primer pintado** con un script en línea
+(`lib/appearance.js`) que lee `localStorage` y los parámetros del enlace: al abrir la app
+no hay destello de claro sobre oscuro. React los mantiene al día después.
+
+El modo mesero (la pantalla enorme para enseñar al mesero) se queda oscuro a propósito:
+es una pantalla que se enseña de lejos.
+
 ## Base de datos e índices
 
 No hay base de datos. Las frases van en el cliente y la caché es memoria + sessionStorage.

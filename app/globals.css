@@ -15,6 +15,8 @@
 :root {
   /* superficies */
   --bg: #04100f;
+  --sky-top: #0a1e1b;   /* techo del degradado del shell (cambia con el tema) */
+  --grain: 0.05;        /* grano del fondo ambiental (más suave de día) */
   --bg-2: #071412;
   --sheet: #0c1e1b;
   --card: #10241f;
@@ -104,7 +106,7 @@ html, body {
   overflow: hidden;
   background:
     radial-gradient(120% 62% at 50% -18%, color-mix(in oklab, var(--accent) 26%, transparent) 0%, transparent 62%),
-    linear-gradient(180deg, #0a1e1b 0%, var(--bg-2) 42%, var(--bg) 100%);
+    linear-gradient(180deg, var(--sky-top) 0%, var(--bg-2) 42%, var(--bg) 100%);
   transition: background var(--dur-3) var(--ease-out);
 }
 .ambient {
@@ -154,7 +156,7 @@ html, body {
   position: absolute;
   inset: -20%;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
-  opacity: 0.05;
+  opacity: var(--grain, 0.05);
   mix-blend-mode: overlay;
 }
 /* viga de luz que cruza muy despacio */
@@ -967,10 +969,14 @@ button:active, .chip:active, .phrase:active, .mic:active, .primary:active, .ghos
    Acento por pestaña: la app cambia de humor según lo que estés haciendo
    (botones, bordes, foco, dock y orbes siguen el color del contexto).
    ========================================================================== */
-.shell[data-tab="voz"]      { --accent: #2dd4bf; --accent-2: #14b8a6; --accent-ink: #04241f; }
-.shell[data-tab="foto"]     { --accent: #fbbf24; --accent-2: #f59e0b; --accent-ink: #2a1602; }
-.shell[data-tab="frases"]   { --accent: #6ee7b7; --accent-2: #34d399; --accent-ink: #05271b; }
-.shell[data-tab="instalar"] { --accent: #38bdf8; --accent-2: #0ea5e9; --accent-ink: #032434; }
+/* Cada pestaña guarda su tríada en --accent-tab*; el resolutor de apariencias
+   (sección 12) decide si el acento visible sale de la pestaña o del idioma. */
+.shell { --accent-tab: #2dd4bf; --accent-tab-2: #14b8a6; --accent-tab-ink: #04241f; }
+.shell[data-tab="voz"] { --accent-tab: #2dd4bf; --accent-tab-2: #14b8a6; --accent-tab-ink: #04241f; }
+.shell[data-tab="foto"] { --accent-tab: #fbbf24; --accent-tab-2: #f59e0b; --accent-tab-ink: #2a1602; }
+.shell[data-tab="frases"] { --accent-tab: #6ee7b7; --accent-tab-2: #34d399; --accent-tab-ink: #05271b; }
+.shell[data-tab="instalar"] { --accent-tab: #38bdf8; --accent-tab-2: #0ea5e9; --accent-tab-ink: #032434; }
+.shell { --accent: var(--accent-tab); --accent-2: var(--accent-tab-2); --accent-ink: var(--accent-tab-ink); }
 .prose { --accent: #2dd4bf; --accent-2: #14b8a6; --accent-ink: #04241f; }
 
 /* ===== 10. Piezas vivas sueltas ===== */
@@ -1643,4 +1649,192 @@ button:disabled { opacity: 0.5; }
   .eq i { height: 70%; }
   .rail { scroll-behavior: auto; }
   .mic::after { display: none; }
+}
+
+
+/* ==========================================================================
+   13. Apariencias: modo día y paleta por idioma destino
+   Dos ejes que se conmutan en Ajustes y se fijan en el arranque (sin destello):
+     · tema  -> html[data-theme="noche"|"dia"]           (localStorage ty-theme)
+     · tinte -> .shell[data-tint="pestana"|"idioma"]     (localStorage ty-tint)
+                + data-dest="ja-JP" cuando el tinte sigue al idioma destino.
+   El script de arranque escribe los mismos atributos en <html>, así el primer
+   pintado ya sale con el tema, el tinte y el acento correctos; React los
+   mantiene al día a partir de ahí (mismas reglas, dos selectores).
+   ========================================================================== */
+
+/* ===== 13.1 Modo día: tokens claros con contraste AA ===== */
+html { color-scheme: dark; }
+html[data-theme="dia"] {
+  color-scheme: light;
+  --bg: #f2f9f7;
+  --bg-2: #e9f4f0;
+  --sheet: #ffffff;
+  --card: #ffffff;
+  --card-2: #f6fbf9;
+  --well: #edf6f3;
+  --ink: #06201c;
+  --ink-dim: #20403a;
+  --muted: #47665e;
+  --line: #c8ded7;
+  --line-soft: rgba(6, 62, 52, 0.16);
+  --sky-top: #ffffff;
+  --grain: 0.035;
+  --elev-1: 0 10px 24px -20px rgba(4, 38, 33, 0.5);
+  --elev-2: 0 20px 42px -26px rgba(4, 38, 33, 0.42);
+  --hairline: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.42));
+  --amber: #b45309;
+  --coral: #e11d48;
+  --danger: #be123c;
+  --sky: #0369a1;
+  --lime: #4d7c0f;
+  --accent-ink: #ffffff;
+}
+
+/* ===== 13.2 Piezas que traían un color oscuro escrito a mano ===== */
+html[data-theme="dia"] .shell {
+  background:
+    radial-gradient(120% 62% at 50% -18%, color-mix(in oklab, var(--accent) 16%, transparent) 0%, transparent 62%),
+    linear-gradient(180deg, var(--sky-top) 0%, var(--bg-2) 42%, var(--bg) 100%);
+}
+/* de día los orbes se mezclan en multiply: el screen lavaba el color */
+html[data-theme="dia"] .orb { mix-blend-mode: multiply; opacity: 0.32; }
+html[data-theme="dia"] .orb-2 { opacity: 0.26; }
+html[data-theme="dia"] .orb-3 { opacity: 0.18; }
+html[data-theme="dia"] .ambient::after { mix-blend-mode: multiply; }
+html[data-theme="dia"] .beam {
+  background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--accent) 14%, transparent), transparent);
+}
+html[data-theme="dia"] .topbar h1 {
+  background: linear-gradient(96deg, #06201c 0%, color-mix(in oklab, var(--accent-2) 55%, #06201c) 48%, var(--accent) 100%);
+}
+html[data-theme="dia"] .topbar span.pill-live {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.5)), var(--card-2);
+}
+html[data-theme="dia"] .progress { background: color-mix(in oklab, var(--accent) 14%, transparent); }
+
+html[data-theme="dia"] select,
+html[data-theme="dia"] textarea,
+html[data-theme="dia"] .arrow-btn,
+html[data-theme="dia"] .ghost,
+html[data-theme="dia"] .chip,
+html[data-theme="dia"] .phrase,
+html[data-theme="dia"] .phrase-copy,
+html[data-theme="dia"] .swipe-toggle,
+html[data-theme="dia"] .collapse,
+html[data-theme="dia"] .combo-field,
+html[data-theme="dia"] .search input,
+html[data-theme="dia"] .switch .track {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.55)), var(--card-2);
+  color: var(--ink);
+}
+html[data-theme="dia"] .combo-list {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(255, 255, 255, 0.92)), var(--card-2);
+  box-shadow: 0 18px 40px -22px rgba(4, 38, 33, 0.45);
+}
+html[data-theme="dia"] .rail-hint { background: rgba(255, 255, 255, 0.92); }
+html[data-theme="dia"] .ghost.on {
+  background: linear-gradient(180deg, rgba(253, 224, 71, 0.5), rgba(255, 255, 255, 0)), #fef3c7;
+  color: #713f12;
+  border-color: #ca8a04;
+}
+html[data-theme="dia"] .chip.active {
+  background: linear-gradient(180deg, color-mix(in oklab, var(--accent) 20%, #fff), color-mix(in oklab, var(--accent) 8%, #fff));
+  border-color: var(--accent);
+  color: color-mix(in oklab, var(--accent) 78%, #06201c);
+  box-shadow: 0 8px 20px -12px color-mix(in oklab, var(--accent) 60%, transparent);
+}
+html[data-theme="dia"] .chip.active .chip-check { color: var(--accent); }
+html[data-theme="dia"] .switch input:checked + .track { background: var(--accent); }
+html[data-theme="dia"] .switch input:checked + .track::after {
+  background: #ffffff;
+  box-shadow: 0 0 10px color-mix(in oklab, var(--accent) 45%, transparent);
+}
+html[data-theme="dia"] .switch .track::after { background: #93aca5; }
+html[data-theme="dia"] .phrase-copy:hover { border-color: color-mix(in oklab, var(--accent) 45%, var(--line)); }
+html[data-theme="dia"] .search-clear:hover { background: var(--well); }
+html[data-theme="dia"] .combo-opt.active { background: color-mix(in oklab, var(--accent) 12%, #ffffff); }
+html[data-theme="dia"] .combo-input::placeholder { color: #6e8d85; }
+html[data-theme="dia"] .langtag { background: rgba(6, 32, 28, 0.05); }
+html[data-theme="dia"] .dock {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(250, 253, 252, 0.97));
+}
+html[data-theme="dia"] .dock .dock-ind {
+  background:
+    radial-gradient(120% 100% at 50% 120%, color-mix(in oklab, var(--accent) 26%, transparent), transparent 70%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.5)),
+    color-mix(in oklab, var(--accent) 10%, #ffffff);
+  border-color: color-mix(in oklab, var(--accent) 40%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 -10px 26px -16px color-mix(in oklab, var(--accent) 55%, transparent);
+}
+html[data-theme="dia"] .reader {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.62)), var(--well);
+}
+html[data-theme="dia"] .reader-empty,
+html[data-theme="dia"] .swipe-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.55)), var(--card-2);
+}
+html[data-theme="dia"] .swipe-panel { background: var(--card-2); }
+html[data-theme="dia"] .phrase-card {
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.6) 46%), var(--card);
+}
+html[data-theme="dia"] .skeleton i { background: linear-gradient(90deg, #dfeee9 0%, #f3faf8 40%, #dfeee9 80%); }
+html[data-theme="dia"] .mini.heard { background: rgba(255, 255, 255, 0.72); }
+html[data-theme="dia"] .status.error {
+  color: #9f1239;
+  background: rgba(190, 18, 60, 0.08);
+  border-color: rgba(190, 18, 60, 0.3);
+}
+/* el visor se aclara de día; con cámara o foto encima manda la imagen */
+html[data-theme="dia"] .viewfinder { background: radial-gradient(120% 90% at 50% 0%, #ffffff 0%, #e4f0ec 70%); }
+html[data-theme="dia"] .hud i { border-color: rgba(6, 32, 28, 0.42); }
+html[data-theme="dia"] .rec {
+  color: #06201c;
+  background: rgba(255, 255, 255, 0.82);
+  border-color: var(--line);
+}
+/* modo mesero: se queda oscuro a propósito, es una pantalla para enseñar */
+html[data-theme="dia"] .prose { --accent: #0f766e; --accent-2: #115e59; --accent-ink: #ffffff; }
+html[data-theme="dia"] .prose h1 {
+  background: linear-gradient(96deg, #06201c 0%, color-mix(in oklab, var(--accent-2) 55%, #06201c) 48%, var(--accent) 100%);
+}
+html[data-theme="dia"]:has(.prose), html[data-theme="dia"] body:has(.prose) {
+  background:
+    radial-gradient(130% 55% at 50% -12%, color-mix(in oklab, var(--accent) 16%, transparent), transparent 62%),
+    linear-gradient(180deg, #ffffff, var(--bg) 60%);
+  background-attachment: fixed;
+}
+
+/* ===== 13.3 Paleta por pestaña también de día (tonos oscurecidos, AA) ===== */
+html[data-theme="dia"] .shell[data-tab="voz"] { --accent-tab: #0f766e; --accent-tab-2: #115e59; --accent-tab-ink: #ffffff; }
+html[data-theme="dia"] .shell[data-tab="foto"] { --accent-tab: #b45309; --accent-tab-2: #92400e; --accent-tab-ink: #ffffff; }
+html[data-theme="dia"] .shell[data-tab="frases"] { --accent-tab: #047857; --accent-tab-2: #065f46; --accent-tab-ink: #ffffff; }
+html[data-theme="dia"] .shell[data-tab="instalar"] { --accent-tab: #0369a1; --accent-tab-2: #075985; --accent-tab-ink: #ffffff; }
+
+/* ===== 13.4 Paleta por idioma destino =====
+   El tono sale del idioma que lees; la luminosidad, del tema. */
+.shell[data-tint="idioma"][data-dest="ja-JP"] { --accent-h: 28; }
+.shell[data-tint="idioma"][data-dest="en-US"] { --accent-h: 265; }
+.shell[data-tint="idioma"][data-dest="zh-CN"] { --accent-h: 350; }
+.shell[data-tint="idioma"][data-dest="ko-KR"] { --accent-h: 300; }
+.shell[data-tint="idioma"][data-dest="fr-FR"] { --accent-h: 205; }
+.shell[data-tint="idioma"][data-dest="pt-BR"] { --accent-h: 150; }
+.shell[data-tint="idioma"][data-dest="it-IT"] { --accent-h: 130; }
+.shell[data-tint="idioma"][data-dest="de-DE"] { --accent-h: 70; }
+.shell[data-tint="idioma"][data-dest="es-MX"] { --accent-h: 175; }
+.shell[data-tint="idioma"] {
+  --accent-h: 175;
+  --accent-l: 78%;
+  --accent-c: 0.12;
+  --accent: oklch(var(--accent-l) var(--accent-c) var(--accent-h));
+  --accent-2: oklch(calc(var(--accent-l) - 9%) var(--accent-c) var(--accent-h));
+  --accent-ink: oklch(22% 0.05 var(--accent-h));
+}
+html[data-theme="dia"] .shell[data-tint="idioma"] {
+  --accent-l: 47%;
+  --accent-c: 0.11;
+  --accent-ink: #ffffff;
 }

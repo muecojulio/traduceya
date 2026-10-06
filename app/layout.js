@@ -1,6 +1,7 @@
 import "@fontsource-variable/space-grotesk/index.css";
 import "./globals.css";
 import Install from "./install";
+import { BOOT_SCRIPT } from "../lib/appearance";
 
 export const metadata = {
   title: "TraduceYa",
@@ -33,8 +34,13 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="es">
+    // El script de arranque deja el tema en <html> antes del primer pintado;
+    // suppressHydrationWarning evita el aviso de React por esos atributos.
+    <html lang="es" suppressHydrationWarning>
       <body>
+        {/* Sin destello: elige noche/día y el tinte leyendo localStorage y el
+            enlace (?tema=, ?tinte=, ?idioma=) antes de que se pinte la app. */}
+        <script dangerouslySetInnerHTML={{ __html: BOOT_SCRIPT }} />
         <Install />
         {children}
       </body>

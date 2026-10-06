@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { NAMES, SHORT, helloFor } from "../lib/langs";
 import { LANGS, PHRASES, TONES, phraseFor, spokenPart } from "../lib/phrases";
 import { useApp } from "./use-app";
+import { THEMES, TINTS } from "../lib/appearance";
 import { Btn, useRun } from "../components/ui/Btn";
 import { Dock, TabPanel, useTabSwipe } from "../components/ui/Tabs";
 import { Rail } from "../components/ui/Rail";
@@ -243,7 +244,7 @@ export default function Page() {
   const listening = !!a.listening;
 
   return (
-    <div className="shell" data-tab={a.tab}>
+    <div className="shell" data-tab={a.tab} data-tint={a.tint} data-dest={a.targetLang}>
       <Ambient />
       <Progress on={a.busy} />
       <header className="topbar">
@@ -472,6 +473,23 @@ export default function Page() {
         )}
         {a.tab === "instalar" && (
           <TabPanel tab="instalar">
+            <ChipRail
+              label="Apariencia"
+              value={a.theme}
+              onChange={a.setTheme}
+              options={THEMES}
+            />
+            <ChipRail
+              label="Color de acento"
+              value={a.tint}
+              onChange={a.setTint}
+              options={TINTS}
+            />
+            <p className="hint">
+              {a.tint === "idioma"
+                ? `El acento sigue al idioma que lees: ${NAMES[a.targetLang] || a.targetLang}.`
+                : "El acento cambia con la pestaña que tienes abierta."}
+            </p>
             <ChipRail
               label="Voz en español"
               value={a.voiceKind}
