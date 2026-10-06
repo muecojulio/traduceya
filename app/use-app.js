@@ -9,6 +9,8 @@ export function useApp() {
   const [listenLang, setListenLang] = useState("es-MX");
   const [targetLang, setTargetLang] = useState("ja-JP");
   const [listening, setListening] = useState(false);
+  // true mientras hay una traducción o una lectura de foto en vuelo (barra de progreso + esqueleto)
+  const [busy, setBusy] = useState(false);
   const [heard, setHeard] = useState("");
   const [translation, setTranslation] = useState("");
   const [photo, setPhoto] = useState("");
@@ -78,33 +80,38 @@ export function useApp() {
   }, [tab]);
 
   async function translateText(text, sourceId) {
-    if (window.Translator?.create) {
-      try {
-        const sourceLanguage = (sourceId || listenLang).slice(0, 2);
-        const targetLanguage = targetLang.slice(0, 2);
-        const avail = await window.Translator.availability({ sourceLanguage, targetLanguage });
-        if (avail !== "unavailable") {
-          const tr = await window.Translator.create({ sourceLanguage, targetLanguage });
-          const out = await tr.translate(text);
-          if (out) return out;
-        }
-      } catch {}
-    }
-    const ck = `ty:${targetLang}:${text}`;
+    setBusy(true);
     try {
-      const hit = sessionStorage.getItem(ck);
-      if (hit) return hit;
-    } catch {}
-    const res = await fetch("/api/translate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text, target: targetLang }),
-    });
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data.error || "No se pudo traducir");
-    if (!data.translation) throw new Error("La traducción llegó vacía. Intenta otra vez.");
-    try { sessionStorage.setItem(ck, data.translation); } catch {}
-    return data.translation;
+      if (window.Translator?.create) {
+        try {
+          const sourceLanguage = (sourceId || listenLang).slice(0, 2);
+          const targetLanguage = targetLang.slice(0, 2);
+          const avail = await window.Translator.availability({ sourceLanguage, targetLanguage });
+          if (avail !== "unavailable") {
+            const tr = await window.Translator.create({ sourceLanguage, targetLanguage });
+            const out = await tr.translate(text);
+            if (out) return out;
+          }
+        } catch {}
+      }
+      const ck = `ty:${targetLang}:${text}`;
+      try {
+        const hit = sessionStorage.getItem(ck);
+        if (hit) return hit;
+      } catch {}
+      const res = await fetch("/api/translate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text, target: targetLang }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || "No se pudo traducir");
+      if (!data.translation) throw new Error("La traducción llegó vacía. Intenta otra vez.");
+      try { sessionStorage.setItem(ck, data.translation); } catch {}
+      return data.translation;
+    } finally {
+      setBusy(false);
+    }
   }
 
   function talk(text, langId) {
@@ -259,6 +266,7 @@ export function useApp() {
 
   async function sendPhoto(dataUrl) {
     setError("");
+    setBusy(true);
     setStatus("Leyendo menú…");
     try {
       const image = await shrinkDataUrl(dataUrl);
@@ -279,6 +287,8 @@ export function useApp() {
       setError(e.message);
       setStatus("");
       throw e; // let the button show its error state
+    } finally {
+      setBusy(false);
     }
   }
 
@@ -320,7 +330,7 @@ export function useApp() {
 
   return {
     tab, listenLang, setListenLang, targetLang, setTargetLang,
-    listening, heard, translation, setTranslation, photo, status, error, setError,
+    listening, busy, heard, translation, setTranslation, photo, status, error, setError,
     url, autoTalk, setAutoTalk, convo, camOn, torchOn, waiter, setWaiter,
     voiceKind, setVoiceKind, tone, setTone, voiceURI, setVoiceURI,
     esVoices, canInstall, videoRef, galRef,

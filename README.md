@@ -11,6 +11,28 @@ App web instalable para viaje: habla o apunta la cámara y sale la traducción (
 - App: QR e instalar en la pantalla de inicio.
 - Ajuste a pantalla completa por dispositivo; pestañas fijas abajo (safe-area).
 
+## Look & feel (capa visual)
+
+Todo el estilo vive en `app/globals.css`, organizado por secciones y con tokens en `:root`:
+
+- **Acento por contexto.** El color no es fijo: `.shell[data-tab]` cambia `--accent`,
+  y lo siguen botones, bordes, anillos de foco, la píldora del dock y los orbes del fondo.
+  Hablar = turquesa, cámara = ámbar, frases = menta, ajustes = celeste.
+- **Fondo ambiental.** Tres orbes de color que derivan lento, grano fino (SVG en línea) y una
+  viga de luz que cruza cada ~18 s. Sin `filter: blur` sobre bloques grandes para no castigar
+  la GPU del celular.
+- **Tipografía.** Space Grotesk variable autohospedada (`@fontsource-variable/space-grotesk`,
+  ~22 kB el subconjunto latin) para marca, etiquetas y textos grandes; el cuerpo y el CJK
+  siguen con la pila del sistema. No se pide nada a Google Fonts: la CSP (`font-src 'self'`)
+  se respeta y la tipografía funciona offline.
+- **Profundidad.** Paneles y tarjetas con degradado + `hairline` iluminada arriba y sombra tintada;
+  el borde superior usa una máscara con el acento.
+- **Feedback.** Anillos y barras de ecualizador mientras escucha, esqueleto con brillo mientras
+  llega la traducción, entrada palabra por palabra, destello al aterrizar el texto, HUD de cámara
+  con línea de escaneo, barra de progreso indeterminada, y estados ✓/! en cada botón.
+- **Accesibilidad.** `prefers-reduced-motion` congela orbes, ecualizadores, escaneo y grano;
+  los estados nunca dependen solo del color; objetivos táctiles ≥ 44 px; zoom del navegador libre.
+
 ## Base de datos e índices
 
 No hay base de datos. Las frases van en el cliente y la caché es memoria + sessionStorage.

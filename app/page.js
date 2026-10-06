@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { NAMES, SHORT, helloFor } from "../lib/langs";
 import { LANGS, PHRASES, TONES, phraseFor, spokenPart } from "../lib/phrases";
 import { useApp } from "./use-app";
 import { Btn, useRun } from "../components/ui/Btn";
@@ -11,29 +12,52 @@ import { Combobox } from "../components/ui/Combobox";
 import { Switch } from "../components/ui/Switch";
 import { Collapse } from "../components/ui/Collapse";
 import { SwipeActions } from "../components/ui/SwipeActions";
+import { Icon } from "../components/ui/Icons";
+import {
+  Ambient,
+  Eq,
+  MicRings,
+  Progress,
+  Skeleton,
+  Ticker,
+  ViewfinderHud,
+  WordReveal,
+  isCjk,
+  useFlash,
+} from "../components/ui/Viva";
 import { copyText, norm } from "../components/ui/utils";
 
 const TABS = [
-  ["voz", "🗣️", "Hablar"],
-  ["foto", "📷", "Cámara"],
-  ["frases", "⚡", "Frases"],
-  ["instalar", "⚙️", "Ajustes"],
+  ["voz", "mic", "Hablar"],
+  ["foto", "cam", "Cámara"],
+  ["frases", "bolt", "Frases"],
+  ["instalar", "sliders", "Ajustes"],
 ];
 
 const LANG_OPTS = LANGS.map((l) => ({ value: l.id, label: l.name, sub: l.id }));
 
-/** Translation card with swipe-revealable actions + explicit toggle + desktop inline. */
-function ReaderCard({ a }) {
+/** Traducción con acciones a la derecha (swipe) + toggle explícito + inline en desktop. */
+function ReaderCard({ a, empty = { icon: "mic", hint: "Aquí aparece la traducción, en grande." } }) {
   const talkRun = useRun(() => a.talk(spokenPart(a.translation), a.targetLang));
   const copyRun = useRun(() => copyText(spokenPart(a.translation)));
-  if (!a.translation) return null;
+  const text = spokenPart(a.translation);
+  const loading = a.busy && !text;
+  const isNew = useFlash(text ? text : null, 900);
+  if (!text && !loading) {
+    return (
+      <div className="reader-empty">
+        <Icon name={empty.icon} size={22} />
+        <span>{empty.hint}</span>
+      </div>
+    );
+  }
   return (
     <SwipeActions
       label="acciones de la traducción"
       actions={[
         {
           id: "copy",
-          icon: "⧉",
+          icon: <Icon name="copy" size={15} />,
           label: copyRun.state === "ok" ? "Copiado" : "Copiar",
           busy: copyRun.busy,
           ok: copyRun.state === "ok",
@@ -41,7 +65,7 @@ function ReaderCard({ a }) {
         },
         {
           id: "talk",
-          icon: "🔊",
+          icon: <Icon name="sound" size={15} />,
           label: "Repetir",
           busy: talkRun.busy,
           ok: talkRun.state === "ok",
@@ -49,19 +73,26 @@ function ReaderCard({ a }) {
         },
       ]}
     >
-      <div className="reader">
-        <p>{spokenPart(a.translation)}</p>
+      <div className={"reader" + (isNew ? " is-new" : "")}>
+        {loading ? (
+          <Skeleton lines={3} />
+        ) : (
+          <p key={text} className={isCjk(text) ? "jp" : ""}>
+            <WordReveal text={text} />
+          </p>
+        )}
       </div>
       <Btn variant="primary" onClick={() => a.setWaiter(true)}>
-        Mostrar al mesero
+        <Icon name="scan" size={16} /> Mostrar al mesero
       </Btn>
     </SwipeActions>
   );
 }
 
-/** Full-screen card for the other person; closable by tap, button or Esc. */
+/** Pantalla completa para la otra persona; se cierra con toque, botón o Esc. */
 function Waiter({ a }) {
   const ref = useRef(null);
+  const text = spokenPart(a.translation);
   useEffect(() => {
     if (!a.waiter) return;
     ref.current?.focus?.();
@@ -84,16 +115,15 @@ function Waiter({ a }) {
       onClick={() => a.setWaiter(false)}
     >
       <small>Toca cualquier lado o Esc para cerrar</small>
-      <p>{spokenPart(a.translation) || "…"}</p>
+      <p key={text} className={isCjk(text) ? "jp" : ""}>
+        {text ? <WordReveal text={text} max={22} step={34} /> : "…"}
+      </p>
       <div className="waiter-actions" onClick={(e) => e.stopPropagation()}>
-        <Btn
-          variant="ghost"
-          onClick={() => a.talk(spokenPart(a.translation), a.targetLang)}
-        >
-          🔊 Repetir
+        <Btn variant="ghost" onClick={() => a.talk(text, a.targetLang)}>
+          <Icon name="sound" size={16} /> Repetir
         </Btn>
         <Btn variant="ghost" onClick={() => a.setWaiter(false)}>
-          Cerrar
+          <Icon name="close" size={15} /> Cerrar
         </Btn>
       </div>
     </div>
@@ -119,35 +149,47 @@ export default function Page() {
     onSelect: (i) => a.goTab(TABS[i][0]),
   });
 
+  // Par de idiomas + flecha: deja claro quién habla y quién escucha
   const langs = (
-    <div className="row">
-      <Combobox
-        label="Oye"
-        value={a.listenLang}
-        onChange={a.setListenLang}
-        options={LANG_OPTS}
-        placeholder="Buscar idioma…"
-      />
-      <Btn
-        variant="icon"
-        className="swap-btn"
-        aria-label="Intercambiar idiomas"
-        run={swapRun}
-        onClick={() => swapRun.run()}
-      >
-        ⇄
-      </Btn>
-      <Combobox
-        label="Lee"
-        value={a.targetLang}
-        onChange={a.setTargetLang}
-        options={LANG_OPTS}
-        placeholder="Buscar idioma…"
-      />
-    </div>
+    <>
+      <div className="row">
+        <Combobox
+          label="Oye"
+          value={a.listenLang}
+          onChange={a.setListenLang}
+          options={LANG_OPTS}
+          placeholder="Buscar idioma…"
+        />
+        <Btn
+          variant="icon"
+          className="swap-btn"
+          aria-label="Intercambiar idiomas"
+          run={swapRun}
+          onClick={() => swapRun.run()}
+        >
+          <Icon name="swap" size={18} />
+        </Btn>
+        <Combobox
+          label="Lee"
+          value={a.targetLang}
+          onChange={a.setTargetLang}
+          options={LANG_OPTS}
+          placeholder="Buscar idioma…"
+        />
+      </div>
+      <div className="pair" aria-hidden="true">
+        <span className="langtag">
+          <Icon name="mic" size={11} /> {NAMES[a.listenLang] || a.listenLang}
+        </span>
+        <i className="via" />
+        <span className="langtag dest">
+          {NAMES[a.targetLang] || a.targetLang} <Icon name="sound" size={11} />
+        </span>
+      </div>
+    </>
   );
 
-  // Frases: search + per-card feedback
+  // Frases: búsqueda + feedback por tarjeta
   const [q, setQ] = useState("");
   const [flash, setFlash] = useState(null);
   const [copied, setCopied] = useState(null);
@@ -198,11 +240,26 @@ export default function Page() {
     []
   );
 
+  const listening = !!a.listening;
+
   return (
-    <div className="shell">
+    <div className="shell" data-tab={a.tab}>
+      <Ambient />
+      <Progress on={a.busy} />
       <header className="topbar">
-        <h1>TraduceYa</h1>
-        <span>App</span>
+        <div className="brand">
+          <span className="brand-mark" aria-hidden="true">
+            <Icon name="translate" size={18} strokeWidth={1.9} />
+          </span>
+          <h1>TraduceYa</h1>
+        </div>
+        <div className="top-right">
+          <Ticker items={helloFor(a.targetLang)} />
+          <span className="pill-live">
+            <i aria-hidden="true" />
+            {SHORT[a.targetLang] || "app"}
+          </span>
+        </div>
       </header>
       <div className="content" ref={contentRef}>
         {a.tab === "voz" && (
@@ -211,43 +268,82 @@ export default function Page() {
             <Switch id="auto-talk" checked={a.autoTalk} onChange={a.setAutoTalk}>
               Conversación automática (tú hablas, se oye; luego habla el otro)
             </Switch>
-            <Btn
-              variant="mic"
-              className={a.convo || a.listening ? "listening" : ""}
-              aria-pressed={!!a.convo}
-              onClick={a.toggleConvo}
-            >
-              {a.convo ? "Parar" : "Empezar conversación"}
-            </Btn>
-            {a.heard && <p className="mini">{a.heard}</p>}
-            <ReaderCard a={a} />
+            <div className={"mic-wrap" + (a.convo || listening ? " live" : "")}>
+              <MicRings on={a.convo || listening} />
+              <Btn
+                variant="mic"
+                aria-pressed={!!a.convo}
+                onClick={a.toggleConvo}
+              >
+                {listening ? (
+                  <>
+                    <Eq bars={4} /> Escuchando… suelta cuando termines
+                  </>
+                ) : a.convo ? (
+                  "Parar conversación"
+                ) : (
+                  "Empezar conversación"
+                )}
+              </Btn>
+            </div>
+            {a.heard ? (
+              <p className="mini heard">
+                <Icon name="mic" size={13} /> {a.heard}
+              </p>
+            ) : null}
+            <ReaderCard
+              a={a}
+              empty={{
+                icon: "mic",
+                hint: "Toca «Empezar conversación» y habla: la traducción aparece aquí, en grande.",
+              }}
+            />
           </TabPanel>
         )}
         {a.tab === "foto" && (
           <TabPanel tab="foto">
             {langs}
-            <div className="viewfinder" data-no-swipe="">
+            <div className="viewfinder" data-no-swipe="" data-live={a.camOn ? "" : undefined}>
               {a.camOn ? (
-                <video ref={a.videoRef} playsInline autoPlay muted />
+                <>
+                  <video ref={a.videoRef} playsInline autoPlay muted />
+                  <ViewfinderHud live />
+                </>
               ) : a.photo ? (
-                <img src={a.photo} alt="Captura" />
+                <>
+                  <img src={a.photo} alt="Captura" />
+                  <ViewfinderHud />
+                </>
               ) : (
-                <p>Apunta al menú o cartel</p>
+                <>
+                  <p className="vf-empty">
+                    <span className="vf-emoji" aria-hidden="true">
+                      🍜
+                    </span>
+                    Apunta al menú o al cartel
+                    <span className="mini">Con la linterna se lee mejor de noche</span>
+                  </p>
+                  <ViewfinderHud />
+                </>
               )}
             </div>
             <div className="actions">
               {!a.camOn ? (
                 <Btn variant="primary" run={camRun} onClick={() => camRun.run()}>
-                  Abrir cámara
+                  <Icon name="cam" size={16} /> Abrir cámara
                 </Btn>
               ) : (
                 <Btn variant="mic" run={snapRun} onClick={() => snapRun.run()}>
-                  Tomar foto
+                  <Icon name="scan" size={16} /> Tomar foto
                 </Btn>
               )}
             </div>
             <div className="actions">
-              {a.camOn && <Btn variant="ghost" onClick={a.stopCamera}>Cerrar</Btn>}
+              {a.camOn && (
+                <Btn variant="ghost" onClick={a.stopCamera}>
+                  <Icon name="close" size={15} /> Cerrar
+                </Btn>
+              )}
               {a.camOn && (
                 <Btn
                   variant="ghost"
@@ -255,11 +351,11 @@ export default function Page() {
                   aria-pressed={a.torchOn}
                   onClick={a.toggleTorch}
                 >
-                  {a.torchOn ? "Linterna on" : "Linterna"}
+                  <Icon name="bulb" size={15} /> {a.torchOn ? "Linterna on" : "Linterna"}
                 </Btn>
               )}
               <Btn variant="ghost" onClick={() => a.galRef.current?.click()}>
-                Galería
+                <Icon name="image" size={15} /> Galería
               </Btn>
             </div>
             <input
@@ -271,7 +367,13 @@ export default function Page() {
               onChange={a.onGallery}
               aria-label="Elegir foto de la galería"
             />
-            <ReaderCard a={a} />
+            <ReaderCard
+              a={a}
+              empty={{
+                icon: "scan",
+                hint: "Toma la foto del menú: el texto traducido aparece aquí en grande.",
+              }}
+            />
           </TabPanel>
         )}
         {a.tab === "frases" && (
@@ -297,60 +399,74 @@ export default function Page() {
                     aria-label="Limpiar búsqueda"
                     onClick={() => setQ("")}
                   >
-                    ✕
+                    <Icon name="close" size={14} />
                   </button>
                 ) : null}
               </div>
             </div>
             {list.length ? (
-              <Rail label={`Frases disponibles (${list.length})`} className="rail-cards">
-                {list.map((p, i) => {
-                  const dest = phraseFor(p, a.targetLang);
-                  const src = phraseFor(p, a.listenLang);
-                  const played = flash === p.es;
-                  const isCopied = copied === p.es;
-                  return (
-                    <article
-                      key={p.es}
-                      className="phrase-card"
-                      style={{ "--i": i }}
-                      data-ok={played ? "" : undefined}
-                    >
-                      <button
-                        type="button"
-                        className="ui-btn phrase"
-                        onClick={() => playPhrase(p)}
-                        disabled={phraseBusy === p.es}
-                        aria-busy={phraseBusy === p.es || undefined}
+              <>
+                <div className="pair" aria-hidden="true">
+                  <span className="count-badge">{list.length} frases</span>
+                  <i className="via" />
+                  <span className="langtag">funcionan sin internet</span>
+                </div>
+                <Rail label={`Frases disponibles (${list.length})`} className="rail-cards">
+                  {list.map((p, i) => {
+                    const dest = phraseFor(p, a.targetLang);
+                    const src = phraseFor(p, a.listenLang);
+                    const played = flash === p.es;
+                    const isCopied = copied === p.es;
+                    const isBusy = phraseBusy === p.es;
+                    return (
+                      <article
+                        key={p.es}
+                        className="phrase-card"
+                        style={{ "--i": i }}
+                        data-ok={played ? "" : undefined}
                       >
-                        <strong>{src}</strong>
-                        <span>{dest}</span>
-                        {played ? (
-                          <span className="phrase-ok">
-                            <span aria-hidden="true">✓</span> Reproducida
+                        <button
+                          type="button"
+                          className="ui-btn phrase"
+                          onClick={() => playPhrase(p)}
+                          disabled={isBusy}
+                          aria-busy={isBusy || undefined}
+                        >
+                          <strong>{src}</strong>
+                          <span>{dest}</span>
+                          {played ? (
+                            <span className="phrase-ok">
+                              <Icon name="check" size={12} /> Reproducida
+                            </span>
+                          ) : null}
+                        </button>
+                        {isBusy ? (
+                          <span className="eq-live" aria-hidden="true">
+                            <Eq bars={3} />
                           </span>
                         ) : null}
-                      </button>
-                      <button
-                        type="button"
-                        className={"phrase-copy" + (isCopied ? " ok" : "")}
-                        aria-label={
-                          isCopied
-                            ? "Traducción copiada"
-                            : `Copiar traducción de «${src}»`
-                        }
-                        onClick={() => copyPhrase(p)}
-                      >
-                        {isCopied ? "✓" : "⧉"}
-                      </button>
-                    </article>
-                  );
-                })}
-              </Rail>
+                        <button
+                          type="button"
+                          className={"phrase-copy" + (isCopied ? " ok" : "")}
+                          aria-label={
+                            isCopied ? "Traducción copiada" : `Copiar traducción de «${src}»`
+                          }
+                          onClick={() => copyPhrase(p)}
+                        >
+                          {isCopied ? <Icon name="check" size={15} /> : <Icon name="copy" size={15} />}
+                        </button>
+                      </article>
+                    );
+                  })}
+                </Rail>
+              </>
             ) : (
-              <p className="mini" role="status">
-                Sin coincidencias para «{q}». Prueba otra palabra.
-              </p>
+              <div className="reader-empty" role="status">
+                <Icon name="spark" size={20} />
+                <span>
+                  Sin coincidencias para «{q}». Prueba con otra palabra — o escríbela en español.
+                </span>
+              </div>
             )}
           </TabPanel>
         )}
@@ -391,32 +507,44 @@ export default function Page() {
               </div>
             ) : null}
             <Btn variant="primary" run={voiceRun} onClick={() => voiceRun.run()}>
-              Probar voz
+              <Icon name="sound" size={16} /> Probar voz
             </Btn>
             {a.canInstall && (
               <Btn variant="primary" run={installRun} onClick={() => installRun.run()}>
-                Descargar e instalar
+                <Icon name="download" size={16} /> Descargar e instalar
               </Btn>
             )}
             <Collapse label="¿Cómo instalarla?" defaultOpen>
-              {qr && <img className="qr" src={qr} alt="Código QR para abrir TraduceYa en otro dispositivo" />}
-              <p className="hint">{a.url}</p>
+              {qr && (
+                <img
+                  className="qr"
+                  src={qr}
+                  alt="Código QR para abrir TraduceYa en otro dispositivo"
+                />
+              )}
+              <p className="hint mono">{a.url}</p>
               <p className="hint">
                 Android/Windows: Ajustes → Descargar e instalar, o Chrome ⋮ Instalar app.
               </p>
               <p className="hint">iPhone/iPad: Compartir → Añadir a pantalla de inicio.</p>
             </Collapse>
             <a className="legal" href="/privacidad">
-              Política de privacidad
+              <Icon name="spark" size={13} /> Política de privacidad
             </a>
           </TabPanel>
         )}
         <p className={`status ${a.error ? "error" : ""}`} role={a.error ? "alert" : "status"}>
+          {a.busy && !a.error ? <Eq bars={3} /> : null}
           {a.error || a.status}
         </p>
       </div>
       <Dock
-        items={TABS.map(([id, icon, text]) => [id, icon, text, id === "voz" && a.convo])}
+        items={TABS.map(([id, icon, text]) => [
+          id,
+          <Icon name={icon} size={21} />,
+          text,
+          id === "voz" && a.convo,
+        ])}
         value={a.tab}
         onChange={a.goTab}
       />

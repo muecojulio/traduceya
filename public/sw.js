@@ -1,4 +1,4 @@
-const CACHE = "traduceya-v3";
+const CACHE = "traduceya-v4";
 const PRECACHE = ["/", "/manifest.json", "/icon.svg", "/icon-192.png", "/icon-512.png"];
 
 self.addEventListener("install", (e) => {

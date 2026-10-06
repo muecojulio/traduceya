@@ -1,3 +1,4 @@
+import "@fontsource-variable/space-grotesk/index.css";
 import "./globals.css";
 import Install from "./install";
 
@@ -27,7 +28,7 @@ export const viewport = {
   initialScale: 1,
   // Zoom nunca se bloquea: sin maximumScale ni user-scalable=no (accesibilidad).
   viewportFit: "cover",
-  themeColor: "#071412",
+  themeColor: "#04100f",
 };
 
 export default function RootLayout({ children }) {
