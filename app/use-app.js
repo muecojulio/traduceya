@@ -7,6 +7,7 @@ import {
   applyAppearance,
   normalizeTheme,
   normalizeTint,
+  readLinkState,
   readStoredAppearance,
   storeAppearance,
 } from "../lib/appearance";
@@ -75,15 +76,26 @@ export function useApp() {
     };
   }, []);
 
-  // La apariencia guardada: el script de arranque ya la pintó antes del primer
-  // pintado; este efecto deja el estado de React de acuerdo con lo que se ve.
+  // Enlaces directos (?tab= &idioma= &oye= &tema= &tinte=): pintan esta visita.
+  // Las preferencias guardadas mandan en el resto; el enlace no se persiste.
   useEffect(() => {
+    const link = readLinkState(window.location.search);
     const stored = readStoredAppearance();
-    const nextTheme = stored.theme || "noche";
-    const nextTint = stored.tint || "pestana";
+    const nextTheme = link.theme || stored.theme || "noche";
+    const nextTint = link.tint || stored.tint || "pestana";
     setThemeState(nextTheme);
     setTintState(nextTint);
-    applyAppearance({ theme: nextTheme, tint: nextTint, dest: targetRef.current });
+    if (link.listenLang) setListenLang(link.listenLang);
+    if (link.targetLang) setTargetLang(link.targetLang);
+    if (link.tab) setTab(link.tab);
+    applyAppearance({
+      theme: nextTheme,
+      tint: nextTint,
+      dest: link.targetLang || targetRef.current,
+    });
+    // Ya hidrató React: el atributo de arranque sobra (si no, pisaría a la
+    // pestaña activa al cambiar de sección).
+    delete document.documentElement.dataset.bootTab;
   }, []);
 
   // Mantén <html> (y el color de la barra del navegador) al día con el estado.

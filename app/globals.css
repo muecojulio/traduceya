@@ -971,11 +971,13 @@ button:active, .chip:active, .phrase:active, .mic:active, .primary:active, .ghos
    ========================================================================== */
 /* Cada pestaña guarda su tríada en --accent-tab*; el resolutor de apariencias
    (sección 12) decide si el acento visible sale de la pestaña o del idioma. */
+/* `html[data-boot-tab]` lo escribe el script de arranque y se borra al hidratar:
+   así un enlace a /?tab=foto ya sale del color correcto en el primer pintado. */
 .shell { --accent-tab: #2dd4bf; --accent-tab-2: #14b8a6; --accent-tab-ink: #04241f; }
-.shell[data-tab="voz"] { --accent-tab: #2dd4bf; --accent-tab-2: #14b8a6; --accent-tab-ink: #04241f; }
-.shell[data-tab="foto"] { --accent-tab: #fbbf24; --accent-tab-2: #f59e0b; --accent-tab-ink: #2a1602; }
-.shell[data-tab="frases"] { --accent-tab: #6ee7b7; --accent-tab-2: #34d399; --accent-tab-ink: #05271b; }
-.shell[data-tab="instalar"] { --accent-tab: #38bdf8; --accent-tab-2: #0ea5e9; --accent-tab-ink: #032434; }
+.shell[data-tab="voz"],   html[data-boot-tab="voz"]   .shell { --accent-tab: #2dd4bf; --accent-tab-2: #14b8a6; --accent-tab-ink: #04241f; }
+.shell[data-tab="foto"],  html[data-boot-tab="foto"]  .shell { --accent-tab: #fbbf24; --accent-tab-2: #f59e0b; --accent-tab-ink: #2a1602; }
+.shell[data-tab="frases"], html[data-boot-tab="frases"] .shell { --accent-tab: #6ee7b7; --accent-tab-2: #34d399; --accent-tab-ink: #05271b; }
+.shell[data-tab="instalar"], html[data-boot-tab="instalar"] .shell { --accent-tab: #38bdf8; --accent-tab-2: #0ea5e9; --accent-tab-ink: #032434; }
 .shell { --accent: var(--accent-tab); --accent-2: var(--accent-tab-2); --accent-ink: var(--accent-tab-ink); }
 .prose { --accent: #2dd4bf; --accent-2: #14b8a6; --accent-ink: #04241f; }
 
@@ -1809,23 +1811,27 @@ html[data-theme="dia"]:has(.prose), html[data-theme="dia"] body:has(.prose) {
 }
 
 /* ===== 13.3 Paleta por pestaña también de día (tonos oscurecidos, AA) ===== */
-html[data-theme="dia"] .shell[data-tab="voz"] { --accent-tab: #0f766e; --accent-tab-2: #115e59; --accent-tab-ink: #ffffff; }
-html[data-theme="dia"] .shell[data-tab="foto"] { --accent-tab: #b45309; --accent-tab-2: #92400e; --accent-tab-ink: #ffffff; }
-html[data-theme="dia"] .shell[data-tab="frases"] { --accent-tab: #047857; --accent-tab-2: #065f46; --accent-tab-ink: #ffffff; }
-html[data-theme="dia"] .shell[data-tab="instalar"] { --accent-tab: #0369a1; --accent-tab-2: #075985; --accent-tab-ink: #ffffff; }
+html[data-theme="dia"] .shell[data-tab="voz"],
+html[data-theme="dia"][data-boot-tab="voz"] .shell { --accent-tab: #0f766e; --accent-tab-2: #115e59; --accent-tab-ink: #ffffff; }
+html[data-theme="dia"] .shell[data-tab="foto"],
+html[data-theme="dia"][data-boot-tab="foto"] .shell { --accent-tab: #b45309; --accent-tab-2: #92400e; --accent-tab-ink: #ffffff; }
+html[data-theme="dia"] .shell[data-tab="frases"],
+html[data-theme="dia"][data-boot-tab="frases"] .shell { --accent-tab: #047857; --accent-tab-2: #065f46; --accent-tab-ink: #ffffff; }
+html[data-theme="dia"] .shell[data-tab="instalar"],
+html[data-theme="dia"][data-boot-tab="instalar"] .shell { --accent-tab: #0369a1; --accent-tab-2: #075985; --accent-tab-ink: #ffffff; }
 
 /* ===== 13.4 Paleta por idioma destino =====
    El tono sale del idioma que lees; la luminosidad, del tema. */
-.shell[data-tint="idioma"][data-dest="ja-JP"] { --accent-h: 28; }
-.shell[data-tint="idioma"][data-dest="en-US"] { --accent-h: 265; }
-.shell[data-tint="idioma"][data-dest="zh-CN"] { --accent-h: 350; }
-.shell[data-tint="idioma"][data-dest="ko-KR"] { --accent-h: 300; }
-.shell[data-tint="idioma"][data-dest="fr-FR"] { --accent-h: 205; }
-.shell[data-tint="idioma"][data-dest="pt-BR"] { --accent-h: 150; }
-.shell[data-tint="idioma"][data-dest="it-IT"] { --accent-h: 130; }
-.shell[data-tint="idioma"][data-dest="de-DE"] { --accent-h: 70; }
-.shell[data-tint="idioma"][data-dest="es-MX"] { --accent-h: 175; }
-.shell[data-tint="idioma"] {
+.shell[data-tint="idioma"][data-dest="ja-JP"], html[data-tint="idioma"][data-dest="ja-JP"] .shell { --accent-h: 28; }
+.shell[data-tint="idioma"][data-dest="en-US"], html[data-tint="idioma"][data-dest="en-US"] .shell { --accent-h: 265; }
+.shell[data-tint="idioma"][data-dest="zh-CN"], html[data-tint="idioma"][data-dest="zh-CN"] .shell { --accent-h: 350; }
+.shell[data-tint="idioma"][data-dest="ko-KR"], html[data-tint="idioma"][data-dest="ko-KR"] .shell { --accent-h: 300; }
+.shell[data-tint="idioma"][data-dest="fr-FR"], html[data-tint="idioma"][data-dest="fr-FR"] .shell { --accent-h: 205; }
+.shell[data-tint="idioma"][data-dest="pt-BR"], html[data-tint="idioma"][data-dest="pt-BR"] .shell { --accent-h: 150; }
+.shell[data-tint="idioma"][data-dest="it-IT"], html[data-tint="idioma"][data-dest="it-IT"] .shell { --accent-h: 130; }
+.shell[data-tint="idioma"][data-dest="de-DE"], html[data-tint="idioma"][data-dest="de-DE"] .shell { --accent-h: 70; }
+.shell[data-tint="idioma"][data-dest="es-MX"], html[data-tint="idioma"][data-dest="es-MX"] .shell { --accent-h: 175; }
+.shell[data-tint="idioma"], html[data-tint="idioma"] .shell {
   --accent-h: 175;
   --accent-l: 78%;
   --accent-c: 0.12;
@@ -1833,7 +1839,7 @@ html[data-theme="dia"] .shell[data-tab="instalar"] { --accent-tab: #0369a1; --ac
   --accent-2: oklch(calc(var(--accent-l) - 9%) var(--accent-c) var(--accent-h));
   --accent-ink: oklch(22% 0.05 var(--accent-h));
 }
-html[data-theme="dia"] .shell[data-tint="idioma"] {
+html[data-theme="dia"] .shell[data-tint="idioma"], html[data-theme="dia"][data-tint="idioma"] .shell {
   --accent-l: 47%;
   --accent-c: 0.11;
   --accent-ink: #ffffff;
