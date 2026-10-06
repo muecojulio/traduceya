@@ -3,9 +3,20 @@
 import { useEffect, useRef, useState } from "react";
 import { TONES, spokenPart } from "../lib/phrases";
 import { buzz, speakText, shrinkDataUrl } from "../lib/speech";
+import {
+  applyAppearance,
+  normalizeTheme,
+  normalizeTint,
+  readLinkState,
+  readStoredAppearance,
+  storeAppearance,
+} from "../lib/appearance";
 
 export function useApp() {
   const [tab, setTab] = useState("voz");
+  // Apariencia: noche/día y de dónde sale el acento (pestaña o idioma destino).
+  const [theme, setThemeState] = useState("noche");
+  const [tint, setTintState] = useState("pestana");
   const [listenLang, setListenLang] = useState("es-MX");
   const [targetLang, setTargetLang] = useState("ja-JP");
   const [listening, setListening] = useState(false);
@@ -65,6 +76,33 @@ export function useApp() {
     };
   }, []);
 
+  // Enlaces directos (?tab= &idioma= &oye= &tema= &tinte=): pintan esta visita.
+  // Las preferencias guardadas mandan en el resto; el enlace no se persiste.
+  useEffect(() => {
+    const link = readLinkState(window.location.search);
+    const stored = readStoredAppearance();
+    const nextTheme = link.theme || stored.theme || "noche";
+    const nextTint = link.tint || stored.tint || "pestana";
+    setThemeState(nextTheme);
+    setTintState(nextTint);
+    if (link.listenLang) setListenLang(link.listenLang);
+    if (link.targetLang) setTargetLang(link.targetLang);
+    if (link.tab) setTab(link.tab);
+    applyAppearance({
+      theme: nextTheme,
+      tint: nextTint,
+      dest: link.targetLang || targetRef.current,
+    });
+    // Ya hidrató React: el atributo de arranque sobra (si no, pisaría a la
+    // pestaña activa al cambiar de sección).
+    delete document.documentElement.dataset.bootTab;
+  }, []);
+
+  // Mantén <html> (y el color de la barra del navegador) al día con el estado.
+  useEffect(() => {
+    applyAppearance({ theme, tint, dest: targetLang });
+  }, [theme, tint, targetLang]);
+
   useEffect(() => {
     listenRef.current = listenLang;
     targetRef.current = targetLang;
@@ -122,6 +160,18 @@ export function useApp() {
       kind: voiceKind,
       voiceURI: langId.startsWith("es") ? voiceURI : "",
     });
+  }
+
+  function setTheme(value) {
+    const next = normalizeTheme(value);
+    setThemeState(next);
+    storeAppearance({ theme: next });
+  }
+
+  function setTint(value) {
+    const next = normalizeTint(value);
+    setTintState(next);
+    storeAppearance({ tint: next });
   }
 
   function swapLangsNow() {
@@ -330,6 +380,7 @@ export function useApp() {
 
   return {
     tab, listenLang, setListenLang, targetLang, setTargetLang,
+    theme, setTheme, tint, setTint,
     listening, busy, heard, translation, setTranslation, photo, status, error, setError,
     url, autoTalk, setAutoTalk, convo, camOn, torchOn, waiter, setWaiter,
     voiceKind, setVoiceKind, tone, setTone, voiceURI, setVoiceURI,

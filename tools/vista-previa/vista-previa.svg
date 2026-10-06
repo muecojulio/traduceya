@@ -1,0 +1,198 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="2230" viewBox="0 0 1240 2230">
+<rect x="0" y="0" width="1240" height="2230" rx="0" fill="#0b1512" opacity="1"/>
+<rect x="0" y="0" width="1240" height="4" rx="0" fill="#2dd4bf" opacity="1"/>
+<text x="80" y="92" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="34" font-weight="700" fill="#f2fdf9" letter-spacing="-0.8">TraduceYa · las 4 apariencias</text>
+<text x="80" y="126" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="14.5" font-weight="400" fill="#92b3ab">Noche/día (html[data-theme]) × acento por pestaña o por idioma destino (.shell[data-tint][data-dest])</text>
+<text x="80" y="154" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13" font-weight="400" fill="#6f8f87">Conmutables en Ajustes · localStorage ty-theme / ty-tint · el enlace (?tema= &amp;tinte= &amp;idioma=) pinta la visita sin guardarse</text>
+<rect x="64" y="220" width="472" height="908" rx="56" fill="#0f1d1a" opacity="1" stroke="#1d4139" stroke-width="1"/>
+<rect x="80" y="236" width="440" height="800" rx="46" fill="#0b1513" opacity="1"/>
+<rect x="89" y="245" width="422" height="782" rx="38" fill="#04100f" opacity="1"/>
+<defs><linearGradient id="sky-noche-pestana" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a1e1b"/><stop offset="0.42" stop-color="#071412"/><stop offset="1" stop-color="#04100f"/></linearGradient><radialGradient id="halo-noche-pestana" cx="0.5" cy="0" r="0.75"><stop offset="0" stop-color="#38bdf8" stop-opacity="0.3"/><stop offset="1" stop-color="#38bdf8" stop-opacity="0"/></radialGradient></defs>
+<rect x="89" y="245" width="422" height="782" rx="38" fill="url(#sky-noche-pestana)" opacity="1"/>
+<rect x="89" y="245" width="422" height="782" rx="38" fill="url(#halo-noche-pestana)" opacity="1"/>
+<defs><linearGradient id="mark-noche-pestana" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38bdf8"/><stop offset="1" stop-color="#0ea5e9"/></linearGradient></defs>
+<rect x="106" y="270" width="32" height="32" rx="12" fill="url(#mark-noche-pestana)" opacity="1"/>
+<text x="122" y="291.5" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="16" font-weight="700" fill="#032434" text-anchor="middle">T</text>
+<text x="150" y="292" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="19" font-weight="700" fill="#f2fdf9" letter-spacing="-0.6">TraduceYa</text>
+<rect x="450" y="274" width="46" height="24" rx="12" fill="#0c1e1b" opacity="1" stroke="#1d4139" stroke-width="1"/>
+<text x="473" y="291" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="11.5" font-weight="700" fill="#cbeade" text-anchor="middle">JA</text>
+<rect x="102" y="314" width="396" height="1" rx="0" fill="#1d4139" opacity="0.7"/>
+<text x="102" y="348" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#92b3ab" letter-spacing="1.4">APARIENCIA</text>
+<rect x="102" y="358" width="90" height="44" rx="22" fill="#10241f" opacity="1" stroke="#38bdf8" stroke-width="1.6"/><text x="114" y="386" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13" font-weight="700" fill="#38bdf8">✓</text><text x="132" y="386" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13.5" font-weight="700" fill="#38bdf8">Noche</text>
+<rect x="202" y="358" width="84" height="44" rx="22" fill="#0d1f1c" opacity="1" stroke="#1d4139" stroke-width="1"/><text x="215" y="386" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13.5" font-weight="500" fill="#cbeade">Día</text>
+<text x="102" y="422" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#92b3ab" letter-spacing="1.4">COLOR DE ACENTO</text>
+<rect x="102" y="432" width="138" height="44" rx="22" fill="#10241f" opacity="1" stroke="#38bdf8" stroke-width="1.6"/><text x="114" y="460" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13" font-weight="700" fill="#38bdf8">✓</text><text x="132" y="460" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13.5" font-weight="700" fill="#38bdf8">Por pestaña</text>
+<rect x="250" y="432" width="114" height="44" rx="22" fill="#0d1f1c" opacity="1" stroke="#1d4139" stroke-width="1"/><text x="263" y="460" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13.5" font-weight="500" fill="#cbeade">Por idioma</text>
+<text x="102" y="502" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="12" font-weight="400" fill="#92b3ab">El acento cambia con la pestaña abierta.</text>
+<rect x="102" y="522" width="396" height="150" rx="20" fill="#081a17" opacity="1" stroke="#1d4139" stroke-width="1"/>
+<rect x="102" y="536" width="3.5" height="122" rx="2" fill="#38bdf8" opacity="1"/>
+<text x="122" y="568" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="27" font-weight="700" fill="#f2fdf9" letter-spacing="-0.8">Buenos días</text>
+<text x="122" y="592" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13" font-weight="400" fill="#cbeade">con todo gusto, muchas gracias</text>
+<rect x="122" y="610" width="356" height="46" rx="15" fill="#38bdf8" opacity="1"/>
+<text x="300" y="639" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="15" font-weight="700" fill="#032434" text-anchor="middle">Probar voz</text>
+<rect x="102" y="688" width="396" height="54" rx="16" fill="#0c1e1b" opacity="1" stroke="#1d4139" stroke-width="1"/>
+<text x="118" y="721" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="14.5" font-weight="700" fill="#f2fdf9">¿Cómo instalarla?</text>
+<path d="M472 715 l6 6 l6 -6" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/>
+<text x="102" y="762" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#92b3ab" letter-spacing="1.4">VOZ EN ESPAÑOL</text>
+<rect x="102" y="772" width="90" height="44" rx="22" fill="#10241f" opacity="1" stroke="#38bdf8" stroke-width="1.6"/><text x="114" y="800" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13" font-weight="700" fill="#38bdf8">✓</text><text x="132" y="800" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13.5" font-weight="700" fill="#38bdf8">Mujer</text>
+<rect x="202" y="772" width="84" height="44" rx="22" fill="#0d1f1c" opacity="1" stroke="#1d4139" stroke-width="1"/><text x="215" y="800" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13.5" font-weight="500" fill="#cbeade">Hombre</text>
+<rect x="296" y="772" width="84" height="44" rx="22" fill="#0d1f1c" opacity="1" stroke="#1d4139" stroke-width="1"/><text x="309" y="800" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13.5" font-weight="500" fill="#cbeade">Auto</text>
+<rect x="89" y="935" width="422" height="92" rx="0" fill="rgba(9,26,24,0.9)" opacity="1"/>
+<rect x="89" y="935" width="422" height="1" rx="0" fill="#1d4139" opacity="0.8"/>
+<g stroke="#92b3ab" stroke-width="1.9" fill="none" stroke-linecap="round"><rect x="143.5" y="961" width="9" height="14" rx="4.5"/><path d="M140 970 a8 8 0 0 0 16 0"/><path d="M148 978 v4"/></g>
+<text x="148" y="1005" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="11.5" font-weight="600" fill="#92b3ab" text-anchor="middle">Hablar</text>
+<g stroke="#92b3ab" stroke-width="1.8" fill="none" stroke-linejoin="round"><rect x="234" y="964" width="20" height="14" rx="4"/><circle cx="244" cy="971" r="4"/></g>
+<text x="244" y="1005" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="11.5" font-weight="600" fill="#92b3ab" text-anchor="middle">Cámara</text>
+<path d="M342 961 L334 972 h6 l-2 9 8 -11 h-6 z" fill="#92b3ab"/>
+<text x="340" y="1005" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="11.5" font-weight="600" fill="#92b3ab" text-anchor="middle">Frases</text>
+<rect x="392" y="947" width="88" height="68" rx="16" fill="#10241f" opacity="1" stroke="#38bdf8" stroke-width="1.4"/>
+<rect x="392" y="947" width="88" height="68" rx="16" fill="#38bdf8" opacity="0.12"/>
+<g stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"><path d="M427 966 h18"/><path d="M427 975 h18"/><circle cx="433" cy="966" r="2.6" fill="#38bdf8"/><circle cx="440" cy="975" r="2.6" fill="#38bdf8"/></g>
+<text x="436" y="1005" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="11.5" font-weight="700" fill="#38bdf8" text-anchor="middle">Ajustes</text>
+<text x="84" y="1072" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="17" font-weight="700" fill="#eafcf7">Noche · acento por pestaña</text>
+<text x="84" y="1096" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13" font-weight="400" fill="#8fb0a8">Ajustes con el celeste de la sección</text>
+<rect x="704" y="220" width="472" height="908" rx="56" fill="#0f1d1a" opacity="1" stroke="#1d4139" stroke-width="1"/>
+<rect x="720" y="236" width="440" height="800" rx="46" fill="#0b1513" opacity="1"/>
+<rect x="729" y="245" width="422" height="782" rx="38" fill="#04100f" opacity="1"/>
+<defs><linearGradient id="sky-noche-idioma" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a1e1b"/><stop offset="0.42" stop-color="#071412"/><stop offset="1" stop-color="#04100f"/></linearGradient><radialGradient id="halo-noche-idioma" cx="0.5" cy="0" r="0.75"><stop offset="0" stop-color="#fb998c" stop-opacity="0.3"/><stop offset="1" stop-color="#fb998c" stop-opacity="0"/></radialGradient></defs>
+<rect x="729" y="245" width="422" height="782" rx="38" fill="url(#sky-noche-idioma)" opacity="1"/>
+<rect x="729" y="245" width="422" height="782" rx="38" fill="url(#halo-noche-idioma)" opacity="1"/>
+<defs><linearGradient id="mark-noche-idioma" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fb998c"/><stop offset="1" stop-color="#dc7d71"/></linearGradient></defs>
+<rect x="746" y="270" width="32" height="32" rx="12" fill="url(#mark-noche-idioma)" opacity="1"/>
+<text x="762" y="291.5" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="16" font-weight="700" fill="#2e100d" text-anchor="middle">T</text>
+<text x="790" y="292" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="19" font-weight="700" fill="#f2fdf9" letter-spacing="-0.6">TraduceYa</text>
+<rect x="1090" y="274" width="46" height="24" rx="12" fill="#0c1e1b" opacity="1" stroke="#1d4139" stroke-width="1"/>
+<text x="1113" y="291" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="11.5" font-weight="700" fill="#cbeade" text-anchor="middle">JA</text>
+<rect x="742" y="314" width="396" height="1" rx="0" fill="#1d4139" opacity="0.7"/>
+<text x="742" y="348" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#92b3ab" letter-spacing="1.4">APARIENCIA</text>
+<rect x="742" y="358" width="90" height="44" rx="22" fill="#10241f" opacity="1" stroke="#fb998c" stroke-width="1.6"/><text x="754" y="386" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13" font-weight="700" fill="#fb998c">✓</text><text x="772" y="386" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13.5" font-weight="700" fill="#fb998c">Noche</text>
+<rect x="842" y="358" width="84" height="44" rx="22" fill="#0d1f1c" opacity="1" stroke="#1d4139" stroke-width="1"/><text x="855" y="386" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13.5" font-weight="500" fill="#cbeade">Día</text>
+<text x="742" y="422" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#92b3ab" letter-spacing="1.4">COLOR DE ACENTO</text>
+<rect x="742" y="432" width="122" height="44" rx="22" fill="#0d1f1c" opacity="1" stroke="#1d4139" stroke-width="1"/><text x="755" y="460" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13.5" font-weight="500" fill="#cbeade">Por pestaña</text>
+<rect x="874" y="432" width="130" height="44" rx="22" fill="#10241f" opacity="1" stroke="#fb998c" stroke-width="1.6"/><text x="886" y="460" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13" font-weight="700" fill="#fb998c">✓</text><text x="904" y="460" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13.5" font-weight="700" fill="#fb998c">Por idioma</text>
+<text x="742" y="502" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="12" font-weight="400" fill="#92b3ab">El acento sigue al idioma que lees: japonés.</text>
+<rect x="742" y="522" width="396" height="150" rx="20" fill="#081a17" opacity="1" stroke="#1d4139" stroke-width="1"/>
+<rect x="742" y="536" width="3.5" height="122" rx="2" fill="#fb998c" opacity="1"/>
+<text x="762" y="568" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="27" font-weight="700" fill="#f2fdf9" letter-spacing="-0.8">Buenos días</text>
+<text x="762" y="592" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13" font-weight="400" fill="#cbeade">con todo gusto, muchas gracias</text>
+<rect x="762" y="610" width="356" height="46" rx="15" fill="#fb998c" opacity="1"/>
+<text x="940" y="639" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="15" font-weight="700" fill="#2e100d" text-anchor="middle">Probar voz</text>
+<rect x="742" y="688" width="396" height="54" rx="16" fill="#0c1e1b" opacity="1" stroke="#1d4139" stroke-width="1"/>
+<text x="758" y="721" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="14.5" font-weight="700" fill="#f2fdf9">¿Cómo instalarla?</text>
+<path d="M1112 715 l6 6 l6 -6" fill="none" stroke="#fb998c" stroke-width="2" stroke-linecap="round"/>
+<text x="742" y="762" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#92b3ab" letter-spacing="1.4">VOZ EN ESPAÑOL</text>
+<rect x="742" y="772" width="90" height="44" rx="22" fill="#10241f" opacity="1" stroke="#fb998c" stroke-width="1.6"/><text x="754" y="800" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13" font-weight="700" fill="#fb998c">✓</text><text x="772" y="800" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13.5" font-weight="700" fill="#fb998c">Mujer</text>
+<rect x="842" y="772" width="84" height="44" rx="22" fill="#0d1f1c" opacity="1" stroke="#1d4139" stroke-width="1"/><text x="855" y="800" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13.5" font-weight="500" fill="#cbeade">Hombre</text>
+<rect x="936" y="772" width="84" height="44" rx="22" fill="#0d1f1c" opacity="1" stroke="#1d4139" stroke-width="1"/><text x="949" y="800" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13.5" font-weight="500" fill="#cbeade">Auto</text>
+<rect x="729" y="935" width="422" height="92" rx="0" fill="rgba(9,26,24,0.9)" opacity="1"/>
+<rect x="729" y="935" width="422" height="1" rx="0" fill="#1d4139" opacity="0.8"/>
+<g stroke="#92b3ab" stroke-width="1.9" fill="none" stroke-linecap="round"><rect x="783.5" y="961" width="9" height="14" rx="4.5"/><path d="M780 970 a8 8 0 0 0 16 0"/><path d="M788 978 v4"/></g>
+<text x="788" y="1005" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="11.5" font-weight="600" fill="#92b3ab" text-anchor="middle">Hablar</text>
+<g stroke="#92b3ab" stroke-width="1.8" fill="none" stroke-linejoin="round"><rect x="874" y="964" width="20" height="14" rx="4"/><circle cx="884" cy="971" r="4"/></g>
+<text x="884" y="1005" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="11.5" font-weight="600" fill="#92b3ab" text-anchor="middle">Cámara</text>
+<path d="M982 961 L974 972 h6 l-2 9 8 -11 h-6 z" fill="#92b3ab"/>
+<text x="980" y="1005" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="11.5" font-weight="600" fill="#92b3ab" text-anchor="middle">Frases</text>
+<rect x="1032" y="947" width="88" height="68" rx="16" fill="#10241f" opacity="1" stroke="#fb998c" stroke-width="1.4"/>
+<rect x="1032" y="947" width="88" height="68" rx="16" fill="#fb998c" opacity="0.12"/>
+<g stroke="#fb998c" stroke-width="1.8" stroke-linecap="round"><path d="M1067 966 h18"/><path d="M1067 975 h18"/><circle cx="1073" cy="966" r="2.6" fill="#fb998c"/><circle cx="1080" cy="975" r="2.6" fill="#fb998c"/></g>
+<text x="1076" y="1005" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="11.5" font-weight="700" fill="#fb998c" text-anchor="middle">Ajustes</text>
+<text x="724" y="1072" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="17" font-weight="700" fill="#eafcf7">Noche · acento por idioma</text>
+<text x="724" y="1096" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13" font-weight="400" fill="#8fb0a8">El acento sale del japonés (destino)</text>
+<rect x="64" y="1214" width="472" height="908" rx="56" fill="#0f1d1a" opacity="1" stroke="#1d4139" stroke-width="1"/>
+<rect x="80" y="1230" width="440" height="800" rx="46" fill="#e7efec" opacity="1"/>
+<rect x="89" y="1239" width="422" height="782" rx="38" fill="#f2f9f7" opacity="1"/>
+<defs><linearGradient id="sky-dia-pestana" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="0.42" stop-color="#e9f4f0"/><stop offset="1" stop-color="#f2f9f7"/></linearGradient><radialGradient id="halo-dia-pestana" cx="0.5" cy="0" r="0.75"><stop offset="0" stop-color="#0369a1" stop-opacity="0.22"/><stop offset="1" stop-color="#0369a1" stop-opacity="0"/></radialGradient></defs>
+<rect x="89" y="1239" width="422" height="782" rx="38" fill="url(#sky-dia-pestana)" opacity="1"/>
+<rect x="89" y="1239" width="422" height="782" rx="38" fill="url(#halo-dia-pestana)" opacity="1"/>
+<defs><linearGradient id="mark-dia-pestana" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0369a1"/><stop offset="1" stop-color="#075985"/></linearGradient></defs>
+<rect x="106" y="1264" width="32" height="32" rx="12" fill="url(#mark-dia-pestana)" opacity="1"/>
+<text x="122" y="1285.5" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle">T</text>
+<text x="150" y="1286" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="19" font-weight="700" fill="#06201c" letter-spacing="-0.6">TraduceYa</text>
+<rect x="450" y="1268" width="46" height="24" rx="12" fill="#f6fbf9" opacity="1" stroke="#c8ded7" stroke-width="1"/>
+<text x="473" y="1285" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="11.5" font-weight="700" fill="#20403a" text-anchor="middle">JA</text>
+<rect x="102" y="1308" width="396" height="1" rx="0" fill="#c8ded7" opacity="0.7"/>
+<text x="102" y="1342" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#47665e" letter-spacing="1.4">APARIENCIA</text>
+<rect x="102" y="1352" width="84" height="44" rx="22" fill="#f6fbf9" opacity="1" stroke="#c8ded7" stroke-width="1"/><text x="115" y="1380" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13.5" font-weight="500" fill="#20403a">Noche</text>
+<rect x="196" y="1352" width="84" height="44" rx="22" fill="#ffffff" opacity="1" stroke="#0369a1" stroke-width="1.6"/><text x="208" y="1380" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13" font-weight="700" fill="#0369a1">✓</text><text x="226" y="1380" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13.5" font-weight="700" fill="#0369a1">Día</text>
+<text x="102" y="1416" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#47665e" letter-spacing="1.4">COLOR DE ACENTO</text>
+<rect x="102" y="1426" width="138" height="44" rx="22" fill="#ffffff" opacity="1" stroke="#0369a1" stroke-width="1.6"/><text x="114" y="1454" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13" font-weight="700" fill="#0369a1">✓</text><text x="132" y="1454" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13.5" font-weight="700" fill="#0369a1">Por pestaña</text>
+<rect x="250" y="1426" width="114" height="44" rx="22" fill="#f6fbf9" opacity="1" stroke="#c8ded7" stroke-width="1"/><text x="263" y="1454" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13.5" font-weight="500" fill="#20403a">Por idioma</text>
+<text x="102" y="1496" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="12" font-weight="400" fill="#47665e">El acento cambia con la pestaña abierta.</text>
+<rect x="102" y="1516" width="396" height="150" rx="20" fill="#edf6f3" opacity="1" stroke="#c8ded7" stroke-width="1"/>
+<rect x="102" y="1530" width="3.5" height="122" rx="2" fill="#0369a1" opacity="1"/>
+<text x="122" y="1562" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="27" font-weight="700" fill="#06201c" letter-spacing="-0.8">Buenos días</text>
+<text x="122" y="1586" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13" font-weight="400" fill="#20403a">con todo gusto, muchas gracias</text>
+<rect x="122" y="1604" width="356" height="46" rx="15" fill="#0369a1" opacity="1"/>
+<text x="300" y="1633" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">Probar voz</text>
+<rect x="102" y="1682" width="396" height="54" rx="16" fill="#f6fbf9" opacity="1" stroke="#c8ded7" stroke-width="1"/>
+<text x="118" y="1715" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="14.5" font-weight="700" fill="#06201c">¿Cómo instalarla?</text>
+<path d="M472 1709 l6 6 l6 -6" fill="none" stroke="#0369a1" stroke-width="2" stroke-linecap="round"/>
+<text x="102" y="1756" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#47665e" letter-spacing="1.4">VOZ EN ESPAÑOL</text>
+<rect x="102" y="1766" width="90" height="44" rx="22" fill="#ffffff" opacity="1" stroke="#0369a1" stroke-width="1.6"/><text x="114" y="1794" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13" font-weight="700" fill="#0369a1">✓</text><text x="132" y="1794" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13.5" font-weight="700" fill="#0369a1">Mujer</text>
+<rect x="202" y="1766" width="84" height="44" rx="22" fill="#f6fbf9" opacity="1" stroke="#c8ded7" stroke-width="1"/><text x="215" y="1794" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13.5" font-weight="500" fill="#20403a">Hombre</text>
+<rect x="296" y="1766" width="84" height="44" rx="22" fill="#f6fbf9" opacity="1" stroke="#c8ded7" stroke-width="1"/><text x="309" y="1794" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13.5" font-weight="500" fill="#20403a">Auto</text>
+<rect x="89" y="1929" width="422" height="92" rx="0" fill="rgba(255,255,255,0.94)" opacity="1"/>
+<rect x="89" y="1929" width="422" height="1" rx="0" fill="#c8ded7" opacity="0.8"/>
+<g stroke="#47665e" stroke-width="1.9" fill="none" stroke-linecap="round"><rect x="143.5" y="1955" width="9" height="14" rx="4.5"/><path d="M140 1964 a8 8 0 0 0 16 0"/><path d="M148 1972 v4"/></g>
+<text x="148" y="1999" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="11.5" font-weight="600" fill="#47665e" text-anchor="middle">Hablar</text>
+<g stroke="#47665e" stroke-width="1.8" fill="none" stroke-linejoin="round"><rect x="234" y="1958" width="20" height="14" rx="4"/><circle cx="244" cy="1965" r="4"/></g>
+<text x="244" y="1999" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="11.5" font-weight="600" fill="#47665e" text-anchor="middle">Cámara</text>
+<path d="M342 1955 L334 1966 h6 l-2 9 8 -11 h-6 z" fill="#47665e"/>
+<text x="340" y="1999" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="11.5" font-weight="600" fill="#47665e" text-anchor="middle">Frases</text>
+<rect x="392" y="1941" width="88" height="68" rx="16" fill="#ffffff" opacity="1" stroke="#0369a1" stroke-width="1.4"/>
+<rect x="392" y="1941" width="88" height="68" rx="16" fill="#0369a1" opacity="0.12"/>
+<g stroke="#0369a1" stroke-width="1.8" stroke-linecap="round"><path d="M427 1960 h18"/><path d="M427 1969 h18"/><circle cx="433" cy="1960" r="2.6" fill="#0369a1"/><circle cx="440" cy="1969" r="2.6" fill="#0369a1"/></g>
+<text x="436" y="1999" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="11.5" font-weight="700" fill="#0369a1" text-anchor="middle">Ajustes</text>
+<text x="84" y="2066" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="17" font-weight="700" fill="#eafcf7">Día · acento por pestaña</text>
+<text x="84" y="2090" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13" font-weight="400" fill="#8fb0a8">Modo claro, mismo celeste oscurecido</text>
+<rect x="704" y="1214" width="472" height="908" rx="56" fill="#0f1d1a" opacity="1" stroke="#1d4139" stroke-width="1"/>
+<rect x="720" y="1230" width="440" height="800" rx="46" fill="#e7efec" opacity="1"/>
+<rect x="729" y="1239" width="422" height="782" rx="38" fill="#f2f9f7" opacity="1"/>
+<defs><linearGradient id="sky-dia-idioma" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="0.42" stop-color="#e9f4f0"/><stop offset="1" stop-color="#f2f9f7"/></linearGradient><radialGradient id="halo-dia-idioma" cx="0.5" cy="0" r="0.75"><stop offset="0" stop-color="#8e3f36" stop-opacity="0.22"/><stop offset="1" stop-color="#8e3f36" stop-opacity="0"/></radialGradient></defs>
+<rect x="729" y="1239" width="422" height="782" rx="38" fill="url(#sky-dia-idioma)" opacity="1"/>
+<rect x="729" y="1239" width="422" height="782" rx="38" fill="url(#halo-dia-idioma)" opacity="1"/>
+<defs><linearGradient id="mark-dia-idioma" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8e3f36"/><stop offset="1" stop-color="#72251e"/></linearGradient></defs>
+<rect x="746" y="1264" width="32" height="32" rx="12" fill="url(#mark-dia-idioma)" opacity="1"/>
+<text x="762" y="1285.5" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle">T</text>
+<text x="790" y="1286" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="19" font-weight="700" fill="#06201c" letter-spacing="-0.6">TraduceYa</text>
+<rect x="1090" y="1268" width="46" height="24" rx="12" fill="#f6fbf9" opacity="1" stroke="#c8ded7" stroke-width="1"/>
+<text x="1113" y="1285" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="11.5" font-weight="700" fill="#20403a" text-anchor="middle">JA</text>
+<rect x="742" y="1308" width="396" height="1" rx="0" fill="#c8ded7" opacity="0.7"/>
+<text x="742" y="1342" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#47665e" letter-spacing="1.4">APARIENCIA</text>
+<rect x="742" y="1352" width="84" height="44" rx="22" fill="#f6fbf9" opacity="1" stroke="#c8ded7" stroke-width="1"/><text x="755" y="1380" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13.5" font-weight="500" fill="#20403a">Noche</text>
+<rect x="836" y="1352" width="84" height="44" rx="22" fill="#ffffff" opacity="1" stroke="#8e3f36" stroke-width="1.6"/><text x="848" y="1380" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13" font-weight="700" fill="#8e3f36">✓</text><text x="866" y="1380" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13.5" font-weight="700" fill="#8e3f36">Día</text>
+<text x="742" y="1416" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#47665e" letter-spacing="1.4">COLOR DE ACENTO</text>
+<rect x="742" y="1426" width="122" height="44" rx="22" fill="#f6fbf9" opacity="1" stroke="#c8ded7" stroke-width="1"/><text x="755" y="1454" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13.5" font-weight="500" fill="#20403a">Por pestaña</text>
+<rect x="874" y="1426" width="130" height="44" rx="22" fill="#ffffff" opacity="1" stroke="#8e3f36" stroke-width="1.6"/><text x="886" y="1454" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13" font-weight="700" fill="#8e3f36">✓</text><text x="904" y="1454" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13.5" font-weight="700" fill="#8e3f36">Por idioma</text>
+<text x="742" y="1496" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="12" font-weight="400" fill="#47665e">El acento sigue al idioma que lees: japonés.</text>
+<rect x="742" y="1516" width="396" height="150" rx="20" fill="#edf6f3" opacity="1" stroke="#c8ded7" stroke-width="1"/>
+<rect x="742" y="1530" width="3.5" height="122" rx="2" fill="#8e3f36" opacity="1"/>
+<text x="762" y="1562" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="27" font-weight="700" fill="#06201c" letter-spacing="-0.8">Buenos días</text>
+<text x="762" y="1586" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13" font-weight="400" fill="#20403a">con todo gusto, muchas gracias</text>
+<rect x="762" y="1604" width="356" height="46" rx="15" fill="#8e3f36" opacity="1"/>
+<text x="940" y="1633" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">Probar voz</text>
+<rect x="742" y="1682" width="396" height="54" rx="16" fill="#f6fbf9" opacity="1" stroke="#c8ded7" stroke-width="1"/>
+<text x="758" y="1715" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="14.5" font-weight="700" fill="#06201c">¿Cómo instalarla?</text>
+<path d="M1112 1709 l6 6 l6 -6" fill="none" stroke="#8e3f36" stroke-width="2" stroke-linecap="round"/>
+<text x="742" y="1756" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#47665e" letter-spacing="1.4">VOZ EN ESPAÑOL</text>
+<rect x="742" y="1766" width="90" height="44" rx="22" fill="#ffffff" opacity="1" stroke="#8e3f36" stroke-width="1.6"/><text x="754" y="1794" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13" font-weight="700" fill="#8e3f36">✓</text><text x="772" y="1794" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13.5" font-weight="700" fill="#8e3f36">Mujer</text>
+<rect x="842" y="1766" width="84" height="44" rx="22" fill="#f6fbf9" opacity="1" stroke="#c8ded7" stroke-width="1"/><text x="855" y="1794" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13.5" font-weight="500" fill="#20403a">Hombre</text>
+<rect x="936" y="1766" width="84" height="44" rx="22" fill="#f6fbf9" opacity="1" stroke="#c8ded7" stroke-width="1"/><text x="949" y="1794" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13.5" font-weight="500" fill="#20403a">Auto</text>
+<rect x="729" y="1929" width="422" height="92" rx="0" fill="rgba(255,255,255,0.94)" opacity="1"/>
+<rect x="729" y="1929" width="422" height="1" rx="0" fill="#c8ded7" opacity="0.8"/>
+<g stroke="#47665e" stroke-width="1.9" fill="none" stroke-linecap="round"><rect x="783.5" y="1955" width="9" height="14" rx="4.5"/><path d="M780 1964 a8 8 0 0 0 16 0"/><path d="M788 1972 v4"/></g>
+<text x="788" y="1999" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="11.5" font-weight="600" fill="#47665e" text-anchor="middle">Hablar</text>
+<g stroke="#47665e" stroke-width="1.8" fill="none" stroke-linejoin="round"><rect x="874" y="1958" width="20" height="14" rx="4"/><circle cx="884" cy="1965" r="4"/></g>
+<text x="884" y="1999" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="11.5" font-weight="600" fill="#47665e" text-anchor="middle">Cámara</text>
+<path d="M982 1955 L974 1966 h6 l-2 9 8 -11 h-6 z" fill="#47665e"/>
+<text x="980" y="1999" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="11.5" font-weight="600" fill="#47665e" text-anchor="middle">Frases</text>
+<rect x="1032" y="1941" width="88" height="68" rx="16" fill="#ffffff" opacity="1" stroke="#8e3f36" stroke-width="1.4"/>
+<rect x="1032" y="1941" width="88" height="68" rx="16" fill="#8e3f36" opacity="0.12"/>
+<g stroke="#8e3f36" stroke-width="1.8" stroke-linecap="round"><path d="M1067 1960 h18"/><path d="M1067 1969 h18"/><circle cx="1073" cy="1960" r="2.6" fill="#8e3f36"/><circle cx="1080" cy="1969" r="2.6" fill="#8e3f36"/></g>
+<text x="1076" y="1999" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="11.5" font-weight="700" fill="#8e3f36" text-anchor="middle">Ajustes</text>
+<text x="724" y="2066" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="17" font-weight="700" fill="#eafcf7">Día · acento por idioma</text>
+<text x="724" y="2090" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="13" font-weight="400" fill="#8fb0a8">Tono japonés más oscuro, para AA</text>
+<rect x="80" y="2116" width="1080" height="1" rx="0" fill="#1d4139" opacity="1"/>
+<text x="80" y="2152" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="14" font-weight="700" fill="#cbeade">Enlaces directos:  /?tab=instalar&amp;tema=dia   ·   /?tab=instalar&amp;tema=dia&amp;tinte=idioma&amp;idioma=ja</text>
+<text x="80" y="2178" font-family="'DejaVu Sans', 'Noto Sans', system-ui, sans-serif" font-size="12.5" font-weight="400" fill="#6f8f87">La maqueta la genera tools/vista-previa/build.mjs; el acento por idioma se calcula en oklch igual que app/globals.css.</text>
+</svg>

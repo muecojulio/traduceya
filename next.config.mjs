@@ -1,9 +1,14 @@
 /** @type {import('next').NextConfig} */
+// Solo en `next dev`: el preview de Arena muestra la app dentro de un iframe,
+// así que ahí el marco se permite. El build de producción no cambia: sigue con
+// X-Frame-Options: DENY y frame-ancestors 'none' (nadie nos incrusta).
+const dev = process.env.NODE_ENV === "development";
+
 const csp = [
   "default-src 'self'",
   "base-uri 'self'",
   "object-src 'none'",
-  "frame-ancestors 'none'",
+  dev ? "frame-ancestors 'self' https:" : "frame-ancestors 'none'",
   "form-action 'self'",
   "manifest-src 'self'",
   "img-src 'self' data: blob: https://api.qrserver.com",
@@ -15,6 +20,16 @@ const csp = [
   "worker-src 'self'",
 ].join("; ");
 
+const baseHeaders = [
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  {
+    key: "Permissions-Policy",
+    value: "camera=(self), microphone=(self), geolocation=(), payment=()",
+  },
+  { key: "Content-Security-Policy", value: csp },
+];
+
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
@@ -22,16 +37,9 @@ const nextConfig = {
     return [
       {
         source: "/(.*)",
-        headers: [
-          { key: "X-Content-Type-Options", value: "nosniff" },
-          { key: "X-Frame-Options", value: "DENY" },
-          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          {
-            key: "Permissions-Policy",
-            value: "camera=(self), microphone=(self), geolocation=(), payment=()",
-          },
-          { key: "Content-Security-Policy", value: csp },
-        ],
+        headers: dev
+          ? baseHeaders
+          : [{ key: "X-Frame-Options", value: "DENY" }, ...baseHeaders],
       },
       {
         source: "/sw.js",
