@@ -3,6 +3,13 @@ import "./globals.css";
 import Install from "./install";
 import { BOOT_SCRIPT } from "../lib/appearance";
 
+// Render dinámico a propósito. La CSP lleva un nonce distinto en cada respuesta
+// (middleware.js) y Next solo se lo pone a sus <script> cuando genera el HTML en
+// el momento; en una página prerenderada serviría el HTML del build sin nonce y
+// el navegador bloquearía la hidratación. El coste es una invocación por visita
+// (el service worker cachea la shell, así que las siguientes no la pagan).
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "TraduceYa",
   description: "Traduce voz y fotos. Incluye japonés.",

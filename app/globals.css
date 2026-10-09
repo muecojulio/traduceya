@@ -65,6 +65,10 @@
   /* safe areas */
   --safe-top: env(safe-area-inset-top, 12px);
   --safe-bottom: env(safe-area-inset-bottom, 10px);
+
+  /* los lee el JS desde getComputedStyle: la onda de voz y el confeti */
+  --wave: #2dd4bf;
+  --confetti: #2dd4bf, #fbbf24, #38bdf8, #a3e635, #fb7185;
 }
 
 /* ===== 2. Base ===== */
@@ -677,7 +681,6 @@ select, textarea {
   border: 1px dashed var(--line);
 }
 .hidden-file { display: none; }
-.phrase-list { display: grid; gap: 8px; }
 .phrase {
   position: relative;
   text-align: left;
@@ -792,16 +795,6 @@ select, textarea {
   padding: 9px 11px;
 }
 
-.qr {
-  display: block;
-  width: 200px;
-  height: 200px;
-  margin: 10px auto;
-  border-radius: 18px;
-  background: #fff;
-  padding: 10px;
-  box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.12);
-}
 .hint { color: var(--muted); font-size: 0.86rem; text-align: center; }
 .hint.mono {
   font-family: var(--font-display);
@@ -978,7 +971,7 @@ button:active, .chip:active, .phrase:active, .mic:active, .primary:active, .ghos
 .shell[data-tab="foto"],  html[data-boot-tab="foto"]  .shell { --accent-tab: #fbbf24; --accent-tab-2: #f59e0b; --accent-tab-ink: #2a1602; }
 .shell[data-tab="frases"], html[data-boot-tab="frases"] .shell { --accent-tab: #6ee7b7; --accent-tab-2: #34d399; --accent-tab-ink: #05271b; }
 .shell[data-tab="instalar"], html[data-boot-tab="instalar"] .shell { --accent-tab: #38bdf8; --accent-tab-2: #0ea5e9; --accent-tab-ink: #032434; }
-.shell { --accent: var(--accent-tab); --accent-2: var(--accent-tab-2); --accent-ink: var(--accent-tab-ink); }
+.shell { --accent: var(--accent-tab); --accent-2: var(--accent-tab-2); --accent-ink: var(--accent-tab-ink); --wave: var(--accent); }
 .prose { --accent: #2dd4bf; --accent-2: #14b8a6; --accent-ink: #04241f; }
 
 /* ===== 10. Piezas vivas sueltas ===== */
@@ -1432,12 +1425,6 @@ button:disabled { opacity: 0.5; }
 .combo-input { flex: 1; min-width: 0; border: 0; background: transparent; color: inherit; font: inherit; padding: 10px 0; }
 .combo-input:focus-visible { outline: none; }
 .combo-input::placeholder { color: #7f9a93; }
-.combo-value {
-  font-family: var(--font-display);
-  font-weight: 650;
-  letter-spacing: -0.01em;
-}
-
 .combo-toggle {
   width: 44px;
   height: 44px;
@@ -1636,7 +1623,6 @@ button:disabled { opacity: 0.5; }
 
 /* ===== estado / errores ===== */
 .status.error { animation: shakeX 190ms ease-in-out 2; }
-.stat-ico { display: inline-grid; place-items: center; width: 16px; height: 16px; flex: 0 0 auto; }
 
 /* ===== reduced motion: todo se congela, nada se pierde ===== */
 @media (prefers-reduced-motion: reduce) {
@@ -1844,3 +1830,297 @@ html[data-theme="dia"] .shell[data-tint="idioma"], html[data-theme="dia"][data-t
   --accent-c: 0.11;
   --accent-ink: #ffffff;
 }
+
+/* ==========================================================================
+   14. Capa viva: auroras, retícula, glifos, onda de voz, confeti, relieve
+   Todo es decorativo (aria-hidden) y se apaga con prefers-reduced-motion.
+   ========================================================================== */
+
+/* --- 14.1 Cielo: auroras girando, retícula en perspectiva, foco al puntero --- */
+.aurora {
+  position: absolute;
+  left: 50%;
+  top: -74vmax;
+  width: 132vmax;
+  height: 132vmax;
+  margin-left: -66vmax;
+  border-radius: 50%;
+  opacity: 0.42;
+  mix-blend-mode: screen;
+  -webkit-mask: radial-gradient(circle at 50% 50%, #000 26%, transparent 60%);
+  mask: radial-gradient(circle at 50% 50%, #000 26%, transparent 60%);
+  will-change: transform;
+}
+.aurora.a1 {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    color-mix(in oklab, var(--accent) 62%, transparent) 58deg,
+    transparent 132deg,
+    color-mix(in oklab, var(--sky) 46%, transparent) 208deg,
+    transparent 292deg
+  );
+  animation: spin 52s linear infinite;
+}
+.aurora.a2 {
+  top: -84vmax;
+  opacity: 0.26;
+  background: conic-gradient(
+    from 180deg,
+    transparent 0deg,
+    color-mix(in oklab, var(--amber) 48%, transparent) 70deg,
+    transparent 150deg,
+    color-mix(in oklab, var(--coral) 38%, transparent) 240deg,
+    transparent 320deg
+  );
+  animation: spin 74s linear infinite reverse;
+}
+@keyframes spin { to { transform: rotate(1turn); } }
+
+.grid-floor {
+  position: absolute;
+  left: -30%;
+  right: -30%;
+  bottom: -14%;
+  height: 48%;
+  background-image:
+    repeating-linear-gradient(90deg, color-mix(in oklab, var(--accent) 24%, transparent) 0 1px, transparent 1px 62px),
+    repeating-linear-gradient(0deg, color-mix(in oklab, var(--accent) 18%, transparent) 0 1px, transparent 1px 46px);
+  background-position: 0 0, 0 0;
+  transform: perspective(320px) rotateX(68deg);
+  transform-origin: 50% 100%;
+  opacity: 0.16;
+  -webkit-mask: linear-gradient(180deg, transparent, #000 78%);
+  mask: linear-gradient(180deg, transparent, #000 78%);
+  animation: gridRun 5.4s linear infinite;
+}
+@keyframes gridRun { to { background-position: 0 0, 0 46px; } }
+
+.spot {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--dur-4) var(--ease-out);
+  background: radial-gradient(
+    420px circle at var(--mx, 50%) var(--my, 0%),
+    color-mix(in oklab, var(--accent) 17%, transparent),
+    transparent 62%
+  );
+}
+.ambient.has-spot .spot { opacity: 1; }
+
+/* --- 14.2 Glifos del idioma destino subiendo --- */
+.glyphs { position: absolute; inset: 0; overflow: hidden; }
+.glyphs b {
+  position: absolute;
+  bottom: -14%;
+  font-family: var(--font-cjk);
+  font-weight: 500;
+  line-height: 1;
+  color: color-mix(in oklab, var(--accent) 58%, transparent);
+  text-shadow: 0 0 22px color-mix(in oklab, var(--accent) 42%, transparent);
+  opacity: 0;
+  animation-name: glyphRise;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+@keyframes glyphRise {
+  0% { opacity: 0; transform: translateY(0) rotate(-7deg) scale(0.88); }
+  14% { opacity: 0.5; }
+  72% { opacity: 0.3; }
+  100% { opacity: 0; transform: translateY(-112vh) rotate(9deg) scale(1.06); }
+}
+
+/* --- 14.3 Onda de voz --- */
+.mic-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 54px;
+  margin: 4px 0 9px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px dashed color-mix(in oklab, var(--accent) 24%, var(--line));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.14));
+  transition: border-color var(--dur-3) var(--ease-out), box-shadow var(--dur-3) var(--ease-out);
+}
+.mic-stage[data-live] {
+  border-style: solid;
+  border-color: color-mix(in oklab, var(--accent) 55%, transparent);
+  box-shadow: inset 0 0 30px -12px color-mix(in oklab, var(--accent) 60%, transparent);
+}
+.waveform { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.42; }
+.waveform[data-on] { opacity: 1; }
+.mic-stage-label {
+  position: relative;
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color var(--dur-2) var(--ease-out);
+}
+.mic-stage[data-live] .mic-stage-label { color: var(--accent); }
+
+/* --- 14.4 Confeti --- */
+.confetti {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* --- 14.5 Relieve: inclinación 3D + brillo que sigue al puntero --- */
+.phrase-card.tilt,
+.viewfinder.tilt {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg))
+    scale(var(--tilt-scale, 1));
+  transition: transform 220ms var(--ease-out), box-shadow var(--dur-2) var(--ease-out),
+    border-color var(--dur-2) var(--ease-out);
+}
+.phrase-card.tilt::after,
+.viewfinder.tilt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 240ms var(--ease-out);
+  background: radial-gradient(
+    240px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(255, 255, 255, 0.16),
+    transparent 62%
+  );
+}
+.phrase-card.tilt:hover::after,
+.viewfinder.tilt:hover::after { opacity: 1; }
+
+/* --- 14.6 Onda al tocar un botón --- */
+.ui-btn { overflow: hidden; }
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: scale(0);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 70%);
+  animation: rippleOut 620ms var(--ease-out) forwards;
+}
+@keyframes rippleOut { to { transform: scale(1); opacity: 0; } }
+
+/* --- 14.7 Panel de vidrio con una viga que recorre el borde --- */
+.panel {
+  background: var(--sheen), color-mix(in oklab, var(--card) 84%, transparent);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+}
+.panel::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklab, var(--accent) 85%, transparent),
+    transparent
+  );
+  background-size: 38% 100%;
+  background-repeat: no-repeat;
+  opacity: 0.75;
+  animation: edgeSweep 7s var(--ease-out) infinite;
+}
+@keyframes edgeSweep { 0% { background-position: -40% 0; } 62%, 100% { background-position: 142% 0; } }
+
+/* --- 14.8 Marca con degradado en movimiento y lector que respira --- */
+.topbar h1 { background-size: 220% 100%; animation: brandFlow 8s var(--ease-out) infinite alternate; }
+@keyframes brandFlow { to { background-position: 100% 0; } }
+.reader.is-new { animation: readerPop 680ms var(--ease-out); }
+@keyframes readerPop {
+  0% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--accent) 55%, transparent); }
+  100% { box-shadow: 0 0 0 18px rgba(45, 212, 191, 0); }
+}
+
+/* --- 14.9 QR dibujado en casa (SVG, no imagen de terceros) --- */
+.qr {
+  display: block;
+  width: 200px;
+  height: 200px;
+  padding: 0;
+  margin: 12px auto;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.12);
+  animation: qrIn var(--dur-4) var(--ease-spring) backwards;
+}
+@keyframes qrIn { from { opacity: 0; transform: scale(0.9) rotate(-2deg); } }
+
+/* --- 14.10 Modo día: la capa viva se suaviza --- */
+html[data-theme="dia"] .aurora { mix-blend-mode: multiply; opacity: 0.22; }
+html[data-theme="dia"] .aurora.a2 { opacity: 0.14; }
+html[data-theme="dia"] .grid-floor { opacity: 0.09; }
+html[data-theme="dia"] .glyphs b { color: color-mix(in oklab, var(--accent) 46%, #06201c); }
+html[data-theme="dia"] .spot { display: none; }
+html[data-theme="dia"] .panel {
+  background: var(--sheen), color-mix(in oklab, var(--card) 80%, transparent);
+}
+html[data-theme="dia"] .mic-stage {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.4));
+}
+html[data-theme="dia"] .phrase-card.tilt::after,
+html[data-theme="dia"] .viewfinder.tilt::after {
+  background: radial-gradient(
+    240px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(255, 255, 255, 0.85),
+    transparent 62%
+  );
+}
+html[data-theme="dia"] .ripple {
+  background: radial-gradient(circle, rgba(6, 32, 28, 0.16), rgba(6, 32, 28, 0) 70%);
+}
+
+/* --- 14.11 prefers-reduced-motion: la capa viva se queda quieta --- */
+@media (prefers-reduced-motion: reduce) {
+  .aurora,
+  .grid-floor,
+  .glyphs b,
+  .panel::after,
+  .topbar h1,
+  .qr { animation: none !important; }
+  .glyphs,
+  .spot { display: none; }
+  .phrase-card.tilt,
+  .viewfinder.tilt { transform: none !important; }
+  .reader.is-new { animation: none !important; }
+}
+
+/* ===== 15. Tipografía de la página legal (listas de cambios, código) ===== */
+.prose dl { margin: 0; }
+.prose dl > div {
+  padding: 10px 0 10px 12px;
+  border-left: 2px solid color-mix(in oklab, var(--accent) 32%, transparent);
+  margin-bottom: 8px;
+}
+.prose dt {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.prose dd { margin: 4px 0 0; }
+.prose code {
+  font-family: var(--font-display);
+  font-size: 0.86em;
+  padding: 1px 5px;
+  border-radius: 6px;
+  background: color-mix(in oklab, var(--accent) 12%, transparent);
+  color: var(--ink);
+}
+.prose ol { padding-left: 1.2em; }

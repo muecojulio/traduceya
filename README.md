@@ -13,23 +13,32 @@ App web instalable para viaje: habla o apunta la cámara y sale la traducción (
 
 ## Look & feel (capa visual)
 
-Todo el estilo vive en `app/globals.css`, organizado por secciones y con tokens en `:root`:
+Todo el estilo vive en `app/globals.css`, organizado por secciones y con tokens en `:root`.
+La capa viva (sección 14) es la que hace que la app se mueva aunque no toques nada:
+auroras girando sobre el cielo, retícula en perspectiva, glifos del idioma destino que
+suben, foco que sigue al ratón, panel de vidrio con una viga que recorre el borde, onda de
+voz que reacciona al dictado, confeti cuando aterriza una traducción, tarjetas que se
+inclinan hacia el puntero y una onda en cada botón al tocarlo. Todo es decorativo
+(`aria-hidden`) y todo se apaga con `prefers-reduced-motion`.
 
 - **Acento por contexto.** El color no es fijo: `.shell[data-tab]` cambia `--accent`,
   y lo siguen botones, bordes, anillos de foco, la píldora del dock y los orbes del fondo.
   Hablar = turquesa, cámara = ámbar, frases = menta, ajustes = celeste.
-- **Fondo ambiental.** Tres orbes de color que derivan lento, grano fino (SVG en línea) y una
-  viga de luz que cruza cada ~18 s. Sin `filter: blur` sobre bloques grandes para no castigar
-  la GPU del celular.
+- **Fondo ambiental.** Tres orbes que derivan lento, dos auroras cónicas que giran en 52 s y
+  74 s, retícula en perspectiva que avanza, glifos del idioma destino subiendo, grano fino
+  (SVG en línea), una viga de luz cada ~18 s y un foco que sigue al puntero en escritorio.
+  Sin `filter: blur` sobre bloques grandes para no castigar la GPU del celular.
 - **Tipografía.** Space Grotesk variable autohospedada (`@fontsource-variable/space-grotesk`,
   ~22 kB el subconjunto latin) para marca, etiquetas y textos grandes; el cuerpo y el CJK
   siguen con la pila del sistema. No se pide nada a Google Fonts: la CSP (`font-src 'self'`)
   se respeta y la tipografía funciona offline.
 - **Profundidad.** Paneles y tarjetas con degradado + `hairline` iluminada arriba y sombra tintada;
   el borde superior usa una máscara con el acento.
-- **Feedback.** Anillos y barras de ecualizador mientras escucha, esqueleto con brillo mientras
-  llega la traducción, entrada palabra por palabra, destello al aterrizar el texto, HUD de cámara
-  con línea de escaneo, barra de progreso indeterminada, y estados ✓/! en cada botón.
+- **Feedback.** Onda de voz que sube con el texto reconocido, anillos y barras de
+  ecualizador mientras escucha, esqueleto con brillo mientras llega la traducción, entrada
+  palabra por palabra, destello y halo al aterrizar el texto, confeti, HUD de cámara con
+  línea de escaneo, barra de progreso indeterminada, contador que cuenta las frases, y
+  estados ✓/! en cada botón.
 - **Accesibilidad.** `prefers-reduced-motion` congela orbes, ecualizadores, escaneo y grano;
   los estados nunca dependen solo del color; objetivos táctiles ≥ 44 px; zoom del navegador libre.
 
@@ -81,6 +90,10 @@ ignora en silencio para no romper el arranque.
 maqueta de las cuatro apariencias (noche/día × por pestaña/por idioma). Sin dependencias:
 solo Node, para poder mirarla o rasterizarla con lo que tengas a mano.
 
+`npm run qr` (`tools/qr-check.mjs`) imprime los códigos que genera `lib/qr.js`, y
+`python3 tools/qr-check.py` los compara módulo por módulo con la librería `qrcode` de
+Python en las 8 máscaras y los 4 niveles de corrección.
+
 ## Base de datos e índices
 
 No hay base de datos. Las frases van en el cliente y la caché es memoria + sessionStorage.
@@ -108,7 +121,12 @@ Orden de traducción (las keys no se quitan):
 Si un motor devuelve error, HTML o vacío, se ignora y sigue el siguiente de la lista.
 
 Fotos: Groq visión o OCR.space.
-Definiciones cortas en inglés: [dictionaryapi.dev](https://dictionaryapi.dev) vía `/api/define?q=`.
+
+El QR de «abrir la app en otro celular» se dibuja en el dispositivo con `lib/qr.js`
+(generador propio, sin dependencias): ya no se pide a `api.qrserver.com`, así que ningún
+tercero ve la dirección de tu copia y la CSP no tiene que abrir `img-src` a un dominio
+externo. `npm run qr` imprime las matrices; `python3 tools/qr-check.py` las compara contra
+la librería `qrcode` de Python (256/256 idénticas).
 
 Variables:
 
@@ -149,6 +167,12 @@ Notas de despliegue:
 
 Ruta `/privacidad`.
 
+## Seguridad
+
+`SECURITY.md`: cabeceras, CSP con nonce, validación de entradas, límite de peticiones y las
+comprobaciones que se pasan (`npm audit` en 0, matrices del QR idénticas a la referencia,
+entradas inválidas rechazadas con 400).
+
 ## Publicar (resumen)
 
 1. Repo `traduceya` en GitHub.
@@ -162,3 +186,15 @@ Ruta `/privacidad`.
 - La voz funciona mejor en Chrome o Edge.
 - La linterna no enciende en todos los iPhone.
 - No es un intérprete de auriculares en tiempo real.
+
+## Dependencias
+
+Solo cuatro, todas con `npm audit` en 0 avisos:
+
+- `next` 15.5.27 (las 15.5.24 y anteriores traen avisos de *cache poisoning* en SSG/ISR).
+- `react` y `react-dom` 19.3.0.
+- `@fontsource-variable/space-grotesk` para la tipografía autohospedada.
+
+`overrides` fija `postcss` a `^8.5.29`: Next declara 8.4.31, que arrastra avisos altos de
+PostCSS (lectura de ficheros por `sourceMappingURL` y XSS en el *stringify* de CSS). Es una
+rama secundaria compatible y el build pasa igual.

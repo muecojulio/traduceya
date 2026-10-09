@@ -75,6 +75,29 @@ function Slot({ state }) {
   return <span className="ui-mark keep" aria-hidden="true">·</span>;
 }
 
+/** Onda que sale del punto exacto del toque. Un <i> por toque, se limpia solo. */
+function useRipple() {
+  const ref = useRef(null);
+  return useCallback(
+    (event) => {
+      const el = ref.current;
+      if (!el) return;
+      const box = el.getBoundingClientRect();
+      const size = Math.max(box.width, box.height) * 1.6;
+      const wave = document.createElement("i");
+      wave.className = "ripple";
+      wave.style.width = `${size}px`;
+      wave.style.height = `${size}px`;
+      wave.style.left = `${event.clientX - box.left - size / 2}px`;
+      wave.style.top = `${event.clientY - box.top - size / 2}px`;
+      el.appendChild(wave);
+      wave.addEventListener("animationend", () => wave.remove(), { once: true });
+      setTimeout(() => wave.remove(), 900); // por si la animación no llega a correr
+    },
+    []
+  );
+}
+
 /**
  * Button with consistent microinteractions + async feedback states.
  * Keeps the app's legacy look classes (.primary/.ghost/.mic/.arrow-btn).
@@ -87,8 +110,11 @@ export function Btn({
   className = "",
   children,
   type = "button",
+  onPointerDown,
   ...rest
 }) {
+  const ref = useRef(null);
+  const ripple = useRipple();
   const state = run?.state || (loading ? "loading" : "idle");
   const isLoading = state === "loading";
   const hasSlot = !!run; // reserve icon slot only for stateful buttons → stable width
@@ -104,10 +130,15 @@ export function Btn({
     .join(" ");
   return (
     <button
+      ref={ref}
       type={type}
       className={cls}
       disabled={disabled || isLoading}
       aria-busy={isLoading || undefined}
+      onPointerDown={(e) => {
+        ripple(e);
+        onPointerDown?.(e);
+      }}
       {...rest}
     >
       <span className="ui-btn-in">
