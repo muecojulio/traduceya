@@ -1,33 +1,24 @@
 /** @type {import('next').NextConfig} */
-// Solo en `next dev`: el preview de Arena muestra la app dentro de un iframe,
-// así que ahí el marco se permite. El build de producción no cambia: sigue con
-// X-Frame-Options: DENY y frame-ancestors 'none' (nadie nos incrusta).
+// Cabeceras que aplican a TODO lo que sirve la app (documentos y estáticos).
+// La Content-Security-Policy no está aquí: vive en middleware.js porque
+// necesita un nonce por respuesta (ver el comentario de ese archivo).
 const dev = process.env.NODE_ENV === "development";
-
-const csp = [
-  "default-src 'self'",
-  "base-uri 'self'",
-  "object-src 'none'",
-  dev ? "frame-ancestors 'self' https:" : "frame-ancestors 'none'",
-  "form-action 'self'",
-  "manifest-src 'self'",
-  "img-src 'self' data: blob: https://api.qrserver.com",
-  "media-src 'self' blob:",
-  "connect-src 'self' https:",
-  "script-src 'self' 'unsafe-inline'",
-  "style-src 'self' 'unsafe-inline'",
-  "font-src 'self'",
-  "worker-src 'self'",
-].join("; ");
 
 const baseHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   {
     key: "Permissions-Policy",
-    value: "camera=(self), microphone=(self), geolocation=(), payment=()",
+    value:
+      "camera=(self), microphone=(self), geolocation=(), payment=(), usb=(), " +
+      "bluetooth=(), interest-cohort=(), accelerometer=(), gyroscope=(), magnetometer=()",
   },
-  { key: "Content-Security-Policy", value: csp },
+  // Aislamiento del documento: no se comparte proceso con otros orígenes.
+  { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+  // Nuestros recursos no se pueden incrustar desde otro origen.
+  { key: "Cross-Origin-Resource-Policy", value: "same-origin" },
+  { key: "X-DNS-Prefetch-Control", value: "off" },
+  { key: "X-Permitted-Cross-Domain-Policies", value: "none" },
 ];
 
 const nextConfig = {

@@ -14,14 +14,20 @@ import { Switch } from "../components/ui/Switch";
 import { Collapse } from "../components/ui/Collapse";
 import { SwipeActions } from "../components/ui/SwipeActions";
 import { Icon } from "../components/ui/Icons";
+import { Qr } from "../components/ui/Qr";
 import {
   Ambient,
+  Confetti,
+  CountUp,
   Eq,
   MicRings,
   Progress,
   Skeleton,
   Ticker,
+  useTilt,
+  useVoiceEnergy,
   ViewfinderHud,
+  Waveform,
   WordReveal,
   isCjk,
   useFlash,
@@ -90,6 +96,48 @@ function ReaderCard({ a, empty = { icon: "mic", hint: "Aquí aparece la traducci
   );
 }
 
+/** Tarjeta de frase: se inclina hacia el puntero y brilla donde lo tocas. */
+function PhraseCard({ p, index, src, dest, played, copied, busy, onPlay, onCopy }) {
+  const tilt = useTilt({ max: 5 });
+  return (
+    <article
+      ref={tilt}
+      className="phrase-card tilt"
+      style={{ "--i": index }}
+      data-ok={played ? "" : undefined}
+    >
+      <button
+        type="button"
+        className="ui-btn phrase"
+        onClick={onPlay}
+        disabled={busy}
+        aria-busy={busy || undefined}
+      >
+        <strong>{src}</strong>
+        <span>{dest}</span>
+        {played ? (
+          <span className="phrase-ok">
+            <Icon name="check" size={12} /> Reproducida
+          </span>
+        ) : null}
+      </button>
+      {busy ? (
+        <span className="eq-live" aria-hidden="true">
+          <Eq bars={3} />
+        </span>
+      ) : null}
+      <button
+        type="button"
+        className={"phrase-copy" + (copied ? " ok" : "")}
+        aria-label={copied ? "Traducción copiada" : `Copiar traducción de «${src}»`}
+        onClick={onCopy}
+      >
+        {copied ? <Icon name="check" size={15} /> : <Icon name="copy" size={15} />}
+      </button>
+    </article>
+  );
+}
+
 /** Pantalla completa para la otra persona; se cierra con toque, botón o Esc. */
 function Waiter({ a }) {
   const ref = useRef(null);
@@ -133,15 +181,24 @@ function Waiter({ a }) {
 
 export default function Page() {
   const a = useApp();
-  const qr = a.url
-    ? `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(a.url)}`
-    : "";
 
   const swapRun = useRun(a.swapLangsNow);
   const camRun = useRun(a.startCamera);
   const snapRun = useRun(a.snap);
   const voiceRun = useRun(() => a.talk("Hola, esta es mi voz en español.", "es-MX"));
   const installRun = useRun(a.installApp);
+  const viewfinder = useTilt({ max: 4, scale: 1.005 });
+
+  // La onda reacciona al texto que va reconociendo el dictado; el confeti
+  // estalla cada vez que aterriza una traducción nueva.
+  const { level, bump } = useVoiceEnergy();
+  const heardLen = a.heard.length;
+  const prevHeard = useRef(0);
+  useEffect(() => {
+    const grown = heardLen - prevHeard.current;
+    if (grown > 0) bump(Math.min(1.5, grown / 5));
+    prevHeard.current = heardLen;
+  }, [heardLen, bump]);
 
   const tabIdx = Math.max(0, TABS.findIndex(([id]) => id === a.tab));
   const contentRef = useTabSwipe({
@@ -242,11 +299,14 @@ export default function Page() {
   );
 
   const listening = !!a.listening;
+  const greetings = helloFor(a.targetLang);
+  const glyphs = greetings.map((g) => g.slice(0, 1));
 
   return (
     <div className="shell" data-tab={a.tab} data-tint={a.tint} data-dest={a.targetLang}>
-      <Ambient />
+      <Ambient glyphs={glyphs} />
       <Progress on={a.busy} />
+      <Confetti signal={a.translation} />
       <header className="topbar">
         <div className="brand">
           <span className="brand-mark" aria-hidden="true">
@@ -255,7 +315,7 @@ export default function Page() {
           <h1>TraduceYa</h1>
         </div>
         <div className="top-right">
-          <Ticker items={helloFor(a.targetLang)} />
+          <Ticker items={greetings} />
           <span className="pill-live">
             <i aria-hidden="true" />
             {SHORT[a.targetLang] || "app"}
@@ -269,6 +329,12 @@ export default function Page() {
             <Switch id="auto-talk" checked={a.autoTalk} onChange={a.setAutoTalk}>
               Conversación automática (tú hablas, se oye; luego habla el otro)
             </Switch>
+            <div className="mic-stage" data-live={a.convo || listening ? "" : undefined}>
+              <Waveform levelRef={level} on={a.convo || listening} />
+              <span className="mic-stage-label">
+                {a.convo || listening ? "Te estoy oyendo…" : "Toca para hablar"}
+              </span>
+            </div>
             <div className={"mic-wrap" + (a.convo || listening ? " live" : "")}>
               <MicRings on={a.convo || listening} />
               <Btn
@@ -304,7 +370,12 @@ export default function Page() {
         {a.tab === "foto" && (
           <TabPanel tab="foto">
             {langs}
-            <div className="viewfinder" data-no-swipe="" data-live={a.camOn ? "" : undefined}>
+            <div
+              ref={viewfinder}
+              className="viewfinder tilt"
+              data-no-swipe=""
+              data-live={a.camOn ? "" : undefined}
+            >
               {a.camOn ? (
                 <>
                   <video ref={a.videoRef} playsInline autoPlay muted />
@@ -408,57 +479,27 @@ export default function Page() {
             {list.length ? (
               <>
                 <div className="pair" aria-hidden="true">
-                  <span className="count-badge">{list.length} frases</span>
+                  <span className="count-badge">
+                    <CountUp to={list.length} /> frases
+                  </span>
                   <i className="via" />
                   <span className="langtag">funcionan sin internet</span>
                 </div>
                 <Rail label={`Frases disponibles (${list.length})`} className="rail-cards">
-                  {list.map((p, i) => {
-                    const dest = phraseFor(p, a.targetLang);
-                    const src = phraseFor(p, a.listenLang);
-                    const played = flash === p.es;
-                    const isCopied = copied === p.es;
-                    const isBusy = phraseBusy === p.es;
-                    return (
-                      <article
-                        key={p.es}
-                        className="phrase-card"
-                        style={{ "--i": i }}
-                        data-ok={played ? "" : undefined}
-                      >
-                        <button
-                          type="button"
-                          className="ui-btn phrase"
-                          onClick={() => playPhrase(p)}
-                          disabled={isBusy}
-                          aria-busy={isBusy || undefined}
-                        >
-                          <strong>{src}</strong>
-                          <span>{dest}</span>
-                          {played ? (
-                            <span className="phrase-ok">
-                              <Icon name="check" size={12} /> Reproducida
-                            </span>
-                          ) : null}
-                        </button>
-                        {isBusy ? (
-                          <span className="eq-live" aria-hidden="true">
-                            <Eq bars={3} />
-                          </span>
-                        ) : null}
-                        <button
-                          type="button"
-                          className={"phrase-copy" + (isCopied ? " ok" : "")}
-                          aria-label={
-                            isCopied ? "Traducción copiada" : `Copiar traducción de «${src}»`
-                          }
-                          onClick={() => copyPhrase(p)}
-                        >
-                          {isCopied ? <Icon name="check" size={15} /> : <Icon name="copy" size={15} />}
-                        </button>
-                      </article>
-                    );
-                  })}
+                  {list.map((p, i) => (
+                    <PhraseCard
+                      key={p.es}
+                      p={p}
+                      index={i}
+                      src={phraseFor(p, a.listenLang)}
+                      dest={phraseFor(p, a.targetLang)}
+                      played={flash === p.es}
+                      copied={copied === p.es}
+                      busy={phraseBusy === p.es}
+                      onPlay={() => playPhrase(p)}
+                      onCopy={() => copyPhrase(p)}
+                    />
+                  ))}
                 </Rail>
               </>
             ) : (
@@ -533,13 +574,13 @@ export default function Page() {
               </Btn>
             )}
             <Collapse label="¿Cómo instalarla?" defaultOpen>
-              {qr && (
-                <img
-                  className="qr"
-                  src={qr}
-                  alt="Código QR para abrir TraduceYa en otro dispositivo"
+              {a.url ? (
+                <Qr
+                  value={a.url}
+                  size={200}
+                  label="Código QR para abrir TraduceYa en otro dispositivo"
                 />
-              )}
+              ) : null}
               <p className="hint mono">{a.url}</p>
               <p className="hint">
                 Android/Windows: Ajustes → Descargar e instalar, o Chrome ⋮ Instalar app.
